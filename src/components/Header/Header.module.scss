@@ -1,0 +1,31 @@
+@import "../../styles/colors";
+@import "../../styles/font";
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 65px;
+    width: 100%;
+    background-color: $backGray;
+    border-bottom: 1px solid $textInActive;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+
+    &_back {
+        display: grid;
+        place-items: center;
+        min-width: 50px;
+        height: 100%;
+        background-color: $backGray;
+        color: $textActive;
+        font-size: $fzLarge;
+    }
+
+    &_label {
+        margin-inline: auto;
+        font-size: $fzLarge;
+        font-weight: $fwThin;
+    }
+}

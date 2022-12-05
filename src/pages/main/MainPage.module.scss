@@ -1,0 +1,71 @@
+@import "../../styles/defaults";
+
+.main {
+    margin: 90px 30px 0;
+    height: calc(100vh - 130px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+
+    .heading {
+        font-size: $fzLarge;
+    }
+
+    .newProject {
+        min-width: 250px;
+        width: min(90%, 350px);
+        min-height: 140px;
+        background-color: $backGray;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid $textInActive;
+        cursor: pointer;
+
+        .plus {
+            transform: scale(200%);
+        }
+    }
+
+    .projectList {
+        height: 100%;
+        min-width: 250px;
+        width: min(90%, 350px);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        list-style: none;
+        overflow-y: auto;
+
+        li {
+            width: 100%;
+            height: 140px;
+            background-color: $backGray;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid $textInActive;
+        }
+
+        @media (min-width: 768px) {
+            width: min(80%, 650px);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-auto-rows: 140px;
+            gap: 20px;
+        }
+
+        @media (min-width: 1024px) {
+            width: min(80%, 1090px);
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (min-width: 1536px) {
+            width: min(80%, 1460px);
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+}

@@ -1,0 +1,51 @@
+@import "../../../styles/colors";
+@import "../../../styles/font";
+
+.back {
+    background-color: $backBlack;
+    color: $textActive;
+    height: 190px;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid $textInActive;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .header {
+        background-color: $backGray;
+        display: flex;
+        align-items: center;
+        padding-left: 50px;
+        height: 100%;
+        border-bottom: 1px solid $textInActive;
+
+        .btn {
+            position: relative;
+            min-width: 50px;
+            height: 100%;
+            background-color: $backGray;
+            color: $textActive;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: $fzLarge;
+        }
+
+        .label {
+            margin-inline: auto;
+        }
+    }
+
+    .list {
+        list-style: none;
+        background-color: $backGray;
+        border-top: 1px solid $textInActive;
+
+        &_option {
+            display: grid;
+            place-items: center;
+            height: 40px;
+        }
+    }
+}

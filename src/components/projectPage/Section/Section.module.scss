@@ -1,0 +1,58 @@
+@import "../../../styles/colors";
+
+.section {
+    flex-shrink: 0;
+    color: $textActive;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    border-radius: 5px;
+    border: 1px solid $backGray;
+    overflow: hidden;
+
+    &Label {
+        width: 100%;
+        line-height: 45px;
+        text-align: center;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .queue {
+        background-color: $redDark;
+    }
+    .development {
+        background-color: $orangeDark;
+    }
+    .done {
+        background-color: $greenDark;
+    }
+
+    .newTask {
+        width: 210px;
+        min-height: 60px;
+        background-color: $backGray;
+        display: grid;
+        place-items: center;
+        border-radius: 5px;
+        border: 1px solid $textInActive;
+
+        .plus {
+            transform: scale(200%);
+        }
+    }
+
+    .taskList {
+        padding: 20px 0;
+        width: 100%;
+        height: calc(100% - 135px);
+        list-style: none;
+        display: flex;
+        flex-shrink: 0;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        overflow-y: auto;
+    }
+}

@@ -1,0 +1,33 @@
+@import "../../styles/colors";
+
+.modal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    background-color: $backModal;
+
+}
+
+.visible {
+    height: 100vh;
+    z-index: 100;
+}
+
+.visible>* {
+    transition: all .2s ease-out;
+    transform: translateY(0);
+}
+
+.hidden {
+    height: 0;
+    transition: z-index 0s .2s;
+    z-index: -100;
+}
+
+.hidden>* {
+    transition: all .2s ease-out;
+    transform: translateY(-100%);
+}

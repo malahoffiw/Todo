@@ -1,0 +1,19 @@
+@import "../../../styles/colors";
+@import "../../../styles/font";
+
+.btn {
+    position: relative;
+    min-width: 50px;
+    height: 100%;
+    background-color: $backGray;
+    color: $textActive;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    &>p {
+        font-size: $fzLarge;
+    }
+}
+
+

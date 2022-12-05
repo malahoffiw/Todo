@@ -1,0 +1,88 @@
+@import "../../../styles/colors";
+@import "../../../styles/font";
+
+.back {
+    background-color: $backBlack;
+    width: 100%;
+    height: calc(265px + 50vh);
+    border-bottom: 1px solid $textInActive;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .header {
+        background-color: $backGray;
+        border-bottom: 1px solid $textInActive;
+        display: flex;
+        justify-content: space-between;
+
+        &_btn {
+            background-color: $backGray;
+            font-size: $fzLarge;
+            color: $textActive;
+            border: none;
+            outline: none;
+            width: 50px;
+        }
+
+        &_label {
+            margin-inline: auto;
+            line-height: 50px;
+        }
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        background-color: $backGray;
+        border-top: 1px solid $textInActive;
+
+        .input {
+            padding: 0 20px;
+            width: 100%;
+            height: 50px;
+            background-color: $backGray;
+            font-size: $fzRegular;
+            font-weight: $fwBold;
+            color: $textActive;
+            outline: none;
+            border: none;
+        }
+
+        .select {
+            border: none;
+            border-top: 1px solid $textInActive;
+            text-align: right;
+
+            &_legend {
+                margin-right: 20px;
+                font-size: $fzSmall;
+            }
+
+            &_element {
+                width: 100%;
+                height: 30px;
+                background-color: $backGray;
+                color: $textActive;
+                font-size: $fzRegular;
+                outline: none;
+                border: none;
+                padding: 0 15px;
+            }
+
+            &:last-of-type {
+                margin-bottom: 5px;
+            }
+        }
+
+        .btnSubmit {
+            background-color: $backGray;
+            color: $textActive;
+            font-size: $fzRegular;
+            border: none;
+            border-top: 1px solid $textInActive;
+            line-height: 48px;
+        }
+    }
+}

@@ -1,0 +1,42 @@
+@import "../../../styles/colors";
+@import "../../../styles/font";
+
+.back {
+    background-color: $backGray;
+    height: 200px;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid $textInActive;
+
+    .label {
+        line-height: 50px;
+    }
+
+    .features {
+        margin-top: 12px;
+        padding-inline: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        &_option {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+
+            &>p:first-of-type {
+                font-weight: $fwThin;
+            }
+        }
+    }
+
+    .btnSubmit {
+        margin-top: 15px;
+        width: 100%;
+        background-color: $backGray;
+        color: $textActive;
+        font-size: $fzRegular;
+        border: none;
+        line-height: 48px;
+    }
+}
