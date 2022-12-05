@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
-import { DndProvider } from "react-dnd"
-import { HTML5Backend } from "react-dnd-html5-backend"
+import { DragDropContext, DropResult } from "react-beautiful-dnd"
 import dayjs, { Dayjs } from "dayjs"
 import { useAppDispatch, useAppSelector } from "../../hooks/redux"
 import Modal from "../../components/Modal/Modal"
@@ -52,6 +51,9 @@ const Project = (): JSX.Element => {
     const editorRef = useRef<Editor>(null)
     const { projectId } = useParams()
     const project = useAppSelector((state) => state.projects[Number(projectId)])
+    const tasks = useAppSelector(
+        (state) => state.projects[Number(projectId)].tasks
+    )
 
     const [isModalVisible, setIsModalVisible] = useState(false)
 
@@ -146,7 +148,7 @@ const Project = (): JSX.Element => {
                 key={id}
                 id={id as Status}
                 name={name}
-                project={project}
+                tasks={tasks}
                 setIsModalVisible={setIsModalVisible}
                 setNewTaskStatus={setNewTaskStatus}
                 setSelectedTask={setSelectedTask}
@@ -154,14 +156,31 @@ const Project = (): JSX.Element => {
         )
     }
 
+    const onDragEnd = (result: DropResult) => {
+        const { destination, source, draggableId } = result
+
+        if (!destination) return
+
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        )
+            return
+
+        const newTask = project.tasks[Number(draggableId)]
+        newTask.status = destination.droppableId as Status
+
+        dispatch(modifyTask(project, newTask))
+    }
+
     return (
         <main className={styles.main}>
             <Header label={"Проект"} backTo={"/"} project={project} />
             <h1 className={styles.label}>{project.label}</h1>
 
-            <DndProvider debugMode={true} backend={HTML5Backend}>
+            <DragDropContext onDragEnd={onDragEnd}>
                 <div className={styles.board}>{sections}</div>
-            </DndProvider>
+            </DragDropContext>
 
             <Modal isVisible={isModalVisible} closeModal={closeModal}>
                 <TaskModal

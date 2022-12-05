@@ -1,54 +1,33 @@
 import React from "react"
-import { useDrag } from "react-dnd"
-import { useAppDispatch } from "../../../hooks/redux"
-import { ItemTypes } from "../../../dndTypes"
-import { Project, Status, Task } from "../../../types"
+import { Draggable } from "react-beautiful-dnd"
+import { Task } from "../../../types"
 import styles from "./TaskCard.module.scss"
-import { changeTaskStatus } from "../../../redux/actions"
 
 type TaskProps = {
     task: Task
+    index: number
     onClick: () => void
 }
 
-export type DropSection = {
-    project: Project
-    status: Status
-}
-
-const TaskCard = ({ task, onClick }: TaskProps) => {
-    const dispatch = useAppDispatch()
-    const [{ isDragging }, drag] = useDrag(() => ({
-        type: ItemTypes.CARD,
-        item: { task },
-        end: (item, monitor) => {
-            const dropSection = monitor.getDropResult<DropSection>()
-            if (item && dropSection) {
-                dispatch(
-                    changeTaskStatus(
-                        dropSection.project,
-                        item.task,
-                        dropSection.status
-                    )
-                )
-            }
-        },
-        collect: (monitor) => ({
-            isDragging: !!monitor.isDragging(),
-        }),
-    }))
-
+const TaskCard = ({ task, index, onClick }: TaskProps) => {
     return (
-        <li
-            onClick={onClick}
-            ref={drag}
-            key={task.id}
-            className={styles.card}
-            style={{ opacity: isDragging ? 0 : 1 }}
-        >
-            <h4 className={styles.label}>{task.label}</h4>
-            <div className={`${styles.tag} ${styles[task.priority]}`} />
-        </li>
+        <Draggable draggableId={String(task.id)} index={index}>
+            {(provided) => (
+                <li
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                    onClick={onClick}
+                    key={task.id}
+                    className={`${styles.card} ${
+                        task.status === "done" ? styles.done : ""
+                    }`}
+                >
+                    <h4 className={styles.label}>{task.label}</h4>
+                    <div className={`${styles.tag} ${styles[task.priority]}`} />
+                </li>
+            )}
+        </Draggable>
     )
 }
 

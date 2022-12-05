@@ -1,14 +1,13 @@
 import React from "react"
-import { Project, Status, Task } from "../../../types"
-import TaskCard, { DropSection } from "../TaskCard/TaskCard"
+import { Droppable } from "react-beautiful-dnd"
+import { Status, Task, TasksList } from "../../../types"
+import TaskCard from "../TaskCard/TaskCard"
 import styles from "./Section.module.scss"
-import { useDrop } from "react-dnd"
-import { ItemTypes } from "../../../dndTypes"
 
 type SectionProps = {
     id: Status
     name: string
-    project: Project
+    tasks: TasksList
     setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>
     setNewTaskStatus: React.Dispatch<React.SetStateAction<Status>>
     setSelectedTask: React.Dispatch<React.SetStateAction<Task>>
@@ -17,29 +16,19 @@ type SectionProps = {
 const Section = ({
     id,
     name,
-    project,
+    tasks,
     setIsModalVisible,
     setNewTaskStatus,
     setSelectedTask,
 }: SectionProps) => {
-    const [{ isOver }, drop] = useDrop(
-        () => ({
-            accept: ItemTypes.CARD,
-            drop: (): DropSection => ({ project, status: id }),
-            collect: (monitor) => ({
-                isOver: !!monitor.isOver(),
-            }),
-        }),
-        [id]
-    )
-
     const generateTasks = (status: Status) => {
-        return Object.values(project.tasks)
+        return Object.values(tasks)
             .filter((task) => task.status === status)
-            .map((task) => (
+            .map((task, index) => (
                 <TaskCard
                     key={task.id}
                     task={task}
+                    index={index}
                     onClick={() => {
                         setSelectedTask(task)
                         setIsModalVisible(true)
@@ -60,20 +49,18 @@ const Section = ({
             >
                 <p className={styles.plus}>+</p>
             </div>
-            <ul ref={drop} className={styles.taskList}>
-                {generateTasks(id)}
-                {isOver && (
-                    <div
-                        style={{
-                            height: "100%",
-                            width: "100%",
-                            zIndex: 1,
-                            opacity: 0.5,
-                            backgroundColor: "gray",
-                        }}
-                    />
+            <Droppable droppableId={id}>
+                {(provided) => (
+                    <ul
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className={styles.taskList}
+                    >
+                        {generateTasks(id)}
+                        {provided.placeholder}
+                    </ul>
                 )}
-            </ul>
+            </Droppable>
         </section>
     )
 }

@@ -1,10 +1,11 @@
 @import "../../../styles/colors";
 
 .card {
+    margin: 5px 0;
     position: relative;
     background-color: $backGray;
-    width: 210px;
-    min-height: 120px;
+    width: 195px;
+    min-height: 100px;
     display: grid;
     place-items: center;
     border-radius: 5px;
@@ -13,7 +14,7 @@
     .tag {
         position: absolute;
         top: 10px;
-        width: 208px;
+        width: 193px;
         height: 10px;
     }
 
@@ -26,4 +27,8 @@
     .low {
         background-color: $greenLight;
     }
+}
+
+.done {
+    opacity: 40%;
 }
