@@ -316,7 +316,13 @@ const TaskModal = ({
                                 Вложенные файлы
                             </legend>
 
-                            <ul className={styles.features_files_list}>
+                            <ul
+                                className={`${
+                                    mainModalData.type === "new"
+                                        ? styles.features_files_withoutSubTasks
+                                        : ""
+                                } ${styles.features_files_list}`}
+                            >
                                 {mainModalData.data.files.map((file) => (
                                     <li
                                         className={

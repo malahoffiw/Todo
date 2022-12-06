@@ -71,6 +71,14 @@
             &:last-of-type {
                 margin-bottom: 10px;
             }
+            
+            @media (min-width: 1024px) {
+                text-align: left;
+
+                &_legend {
+                    margin-left: 20px;
+                }
+            }
         }
 
         &_btn {
@@ -150,6 +158,10 @@
                         &_item {
                             line-height: 50px;
                         }
+                    }
+
+                    &_withoutSubTasks {
+                        width: 100vw;
                     }
                 }
             }

@@ -99,54 +99,57 @@ const SubTaskModal = ({
                         placeholder="Название"
                         autoFocus={true}
                     />
-                    <fieldset className={styles.form_select}>
-                        <legend className={styles.form_select_legend}>
-                            Приоритет
-                        </legend>
-                        <select
-                            className={styles.form_select_element}
-                            value={modalData.data.priority}
-                            onChange={(e) => {
-                                setModalData((prev) => ({
-                                    ...prev,
-                                    data: {
-                                        ...prev.data,
-                                        priority: e.target.value as Priority,
-                                    },
-                                }))
-                            }}
-                        >
-                            <option value="low">Низкий</option>
-                            <option value="regular">Обычный</option>
-                            <option value="high">Высокий</option>
-                        </select>
-                    </fieldset>
+                    <div className={styles.form_fieldsets}>
+                        <fieldset className={styles.form_select}>
+                            <legend className={styles.form_select_legend}>
+                                Приоритет
+                            </legend>
+                            <select
+                                className={styles.form_select_element}
+                                value={modalData.data.priority}
+                                onChange={(e) => {
+                                    setModalData((prev) => ({
+                                        ...prev,
+                                        data: {
+                                            ...prev.data,
+                                            priority: e.target
+                                                .value as Priority,
+                                        },
+                                    }))
+                                }}
+                            >
+                                <option value="low">Низкий</option>
+                                <option value="regular">Обычный</option>
+                                <option value="high">Высокий</option>
+                            </select>
+                        </fieldset>
 
-                    <fieldset className={styles.form_select}>
-                        <legend className={styles.form_select_legend}>
-                            Дата окончания
-                        </legend>
-                        <input
-                            value={
-                                modalData.data.expiresAt
-                                    ? modalData.data.expiresAt.format(
-                                          "YYYY-MM-DD HH:mm"
-                                      )
-                                    : ""
-                            }
-                            onChange={(e) => {
-                                setModalData((prev) => ({
-                                    ...prev,
-                                    data: {
-                                        ...prev.data,
-                                        expiresAt: dayjs(e.target.value),
-                                    },
-                                }))
-                            }}
-                            className={styles.form_select_element}
-                            type="datetime-local"
-                        />
-                    </fieldset>
+                        <fieldset className={styles.form_select}>
+                            <legend className={styles.form_select_legend}>
+                                Дата окончания
+                            </legend>
+                            <input
+                                value={
+                                    modalData.data.expiresAt
+                                        ? modalData.data.expiresAt.format(
+                                              "YYYY-MM-DD HH:mm"
+                                          )
+                                        : ""
+                                }
+                                onChange={(e) => {
+                                    setModalData((prev) => ({
+                                        ...prev,
+                                        data: {
+                                            ...prev.data,
+                                            expiresAt: dayjs(e.target.value),
+                                        },
+                                    }))
+                                }}
+                                className={styles.form_select_element}
+                                type="datetime-local"
+                            />
+                        </fieldset>
+                    </div>
 
                     <TaskEditor
                         editorRef={editorRef}
