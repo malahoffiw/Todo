@@ -3,10 +3,11 @@
 
 .card {
     margin: 5px 0;
+    padding-bottom: 30px;
     position: relative;
     background-color: $backGray;
-    width: 195px;
-    min-height: 120px;
+    width: 215px;
+    min-height: 140px;
     display: grid;
     place-items: center;
     border-radius: 5px;
@@ -15,14 +16,12 @@
     &_tag {
         position: absolute;
         top: 10px;
-        width: 193px;
+        width: 213px;
         height: 10px;
     }
 
     &_time {
         position: absolute;
-        bottom: 5px;
-        right: 5px;
         padding: 2px 5px;
         font-size: $fzSmall;
         background-color: $backBlack;
@@ -36,6 +35,20 @@
         .days {
             color: $greenLight;
         }
+    }
+    &_id {
+        background-color: $backGray;
+        color: $textInActive;
+        top: 25px;
+        left: 5px;
+    }
+    .due {
+        bottom: 35px;
+        right: 5px;
+    }
+    .going {
+        bottom: 10px;
+        right: 5px;
     }
 
     .regular {

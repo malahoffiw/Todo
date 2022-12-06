@@ -11,6 +11,7 @@ type SectionProps = {
     setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>
     setNewTaskStatus: React.Dispatch<React.SetStateAction<Status>>
     setSelectedTask: React.Dispatch<React.SetStateAction<Task>>
+    searchQuery: string
 }
 
 const Section = ({
@@ -20,10 +21,20 @@ const Section = ({
     setIsModalVisible,
     setNewTaskStatus,
     setSelectedTask,
+    searchQuery,
 }: SectionProps) => {
-    const generateTasks = (status: Status) => {
-        return Object.values(tasks)
-            .filter((task) => task.status === status)
+    const doesTaskMatchQuery = (task: Task, query: string) =>
+        task.label.toLowerCase().includes(query.toLowerCase()) ||
+        String(task.id) === query
+
+    const generateTasks = (status: Status) =>
+        Object.values(tasks)
+            .filter(
+                (task) =>
+                    doesTaskMatchQuery(task, searchQuery) &&
+                    task.status === status
+            )
+            .sort((a, b) => b.id - a.id)
             .map((task, index) => (
                 <TaskCard
                     key={task.id}
@@ -35,10 +46,9 @@ const Section = ({
                     }}
                 />
             ))
-    }
 
     return (
-        <section key={id} className={styles.section}>
+        <section className={styles.section}>
             <p className={`${styles.section_label} ${styles[id]}`}>{name}</p>
             <button
                 onClick={() => {

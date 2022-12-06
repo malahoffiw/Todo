@@ -37,6 +37,6 @@ export type TasksList = Record<number, Task>
 export type CommentsList = Record<number, Comment>
 export type SubTasksList = Record<number, SubTask>
 
-export type SubTask = Omit<Task, "subtasks">
+export type SubTask = Omit<Task, "subtasks" | "files" | "comments">
 export type Status = "queue" | "development" | "done"
 export type Priority = "regular" | "high" | "low"

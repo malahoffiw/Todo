@@ -5,7 +5,8 @@
 .back {
     @include modalBackground;
     width: 100%;
-    height: min(calc(371px + 50vh), 95vh);
+    height: min(calc(471px + 50vh), 95vh);
+    max-height: 900px;
 
     .header {
         background-color: $backGray;
@@ -36,6 +37,16 @@
         &_input {
             @include formInputText;
             font-weight: $fwBold;
+        }
+
+        &_fieldsets {
+            display: flex;
+            flex-direction: column;
+
+            @media (min-width: 1024px) {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         &_select {
@@ -71,19 +82,32 @@
             display: flex;
             flex-direction: column;
 
+            @media (min-width: 1024px) {
+                display: grid;
+                grid-template-columns: 50% 50%;
+
+                &_files {
+                    min-height: 150px;
+                }
+            }
+
             &_subtasks {
+                padding: 5px 20px;
                 text-align: left;
-                height: 50px;
+                height: 150px;
+                width: 100vw;
                 border: none;
                 border-top: 1px solid $textInActive;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
 
                 &_legend {
-                    margin-left: 20px;
                     font-size: $fzSmall;
                 }
 
                 @media (min-width: 1024px) {
-                    height: 100px;
+                    width: 50vw;
                 }
             }
 
@@ -105,6 +129,7 @@
                     display: flex;
                     gap: 10px;
                     overflow-x: auto;
+                    list-style: none;
 
                     &_item {
                         line-height: 25px;
@@ -117,7 +142,10 @@
                     height: 100px;
 
                     &_list {
-                        width: 798px;
+                        width: 50vw;
+                        display: grid;
+                        grid-template-rows: repeat(2, 50px);
+                        grid-auto-flow: column;
 
                         &_item {
                             line-height: 50px;
@@ -127,10 +155,16 @@
             }
         }
     }
+}
+
+.subtask {
+    height: min(calc(271px + 50vh), 95vh);
 
     @media (min-width: 1024px) {
-        width: 1000px;
-        height: 80vh;
-        border: 1px solid $textInActive;
+        height: min(calc(171px + 50vh), 95vh);
     }
+}
+
+.newTask {
+    height: min(calc(321px + 50vh), 95vh);
 }

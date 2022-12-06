@@ -1,0 +1,61 @@
+@import "../../../../styles/colors";
+@import "../../../../styles/mixins";
+
+.section {
+    color: $textActive;
+    height: 35px;
+    display: flex;
+    gap: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+
+    &_label {
+        font-size: $fzSmall;
+        min-width: 60px;
+        line-height: 35px;
+        text-align: center;
+    }
+    .queue {
+        background-color: $redDark;
+    }
+    .development {
+        background-color: $orangeDark;
+    }
+    .done {
+        background-color: $greenDark;
+    }
+
+    &_newTask {
+        min-width: 40px;
+        line-height: 35px;
+        background-color: $backGray;
+        color: $textActive;
+        outline: none;
+        border-radius: 5px;
+        border: 1px solid $textInActive;
+
+        &_plus {
+            transform: scale(150%);
+        }
+
+        @include hover
+    }
+
+    &_taskList {
+        width: calc(100vw - 160px);
+        height: 35px;
+        list-style: none;
+        display: flex;
+        flex-shrink: 1;
+        border-radius: 5px;
+        overflow-x: auto;
+
+        @media (min-width: 1024px) {
+            width: calc(50vw - 159px);
+        }
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}

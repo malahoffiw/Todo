@@ -1,8 +1,8 @@
 import React from "react"
 import { Draggable } from "react-beautiful-dnd"
-import dayjs from "dayjs"
 import { Task } from "../../../types"
-import getNoun from "../../../utils/getNoun"
+import getExpiresMessage from "../../../utils/getExpiresMessage"
+import getTimeMessage from "../../../utils/getTimeMessage"
 import styles from "./TaskCard.module.scss"
 
 type TaskCardProps = {
@@ -14,40 +14,6 @@ type TaskCardProps = {
 const TaskCard = ({ task, index, onClick }: TaskCardProps) => {
     const label =
         task.label.length > 14 ? task.label.slice(0, 13) + "..." : task.label
-    const timeMessage = () => {
-        const FIVE_MINUTES_IN_MS = 300000
-        const HOUR_IN_MS = 3600000
-        const DAY_IN_MS = 86400000
-        const time = task.expiresAt?.diff(dayjs())
-
-        if (time < 0) return <p className={styles.minutes}>Время истекло</p>
-        if (time < FIVE_MINUTES_IN_MS)
-            return <p className={styles.minutes}>Меньше 5 минут</p>
-        if (time < HOUR_IN_MS) {
-            const left = task.expiresAt?.diff(dayjs(), "minutes")
-            return (
-                <p className={styles.minutes}>
-                    До конца {left}{" "}
-                    {getNoun(left, ["минута", "минуты", "минут"])}
-                </p>
-            )
-        }
-        if (time < DAY_IN_MS) {
-            const left = task.expiresAt?.diff(dayjs(), "hours")
-            return (
-                <p className={styles.hours}>
-                    До конца {left} {getNoun(left, ["час", "часа", "часов"])}
-                </p>
-            )
-        } else {
-            const left = task.expiresAt?.diff(dayjs(), "days")
-            return (
-                <p className={styles.days}>
-                    До конца {left} {getNoun(left, ["день", "дня", "дней"])}
-                </p>
-            )
-        }
-    }
 
     return (
         <Draggable draggableId={String(task.id)} index={index}>
@@ -57,14 +23,21 @@ const TaskCard = ({ task, index, onClick }: TaskCardProps) => {
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                     onClick={onClick}
-                    key={task.id}
                     className={`${styles.card} ${
                         task.status === "done" ? styles.done : ""
                     }`}
                 >
                     <p>{label}</p>
+                    <p className={`${styles.card_time} ${styles.card_id}`}>
+                        {`#${task.id}`}
+                    </p>
+                    <p className={`${styles.card_time} ${styles.going}`}>
+                        {getTimeMessage(task.createdAt)}
+                    </p>
                     {task.status !== "done" && task.expiresAt && (
-                        <div className={styles.card_time}>{timeMessage()}</div>
+                        <div className={`${styles.card_time} ${styles.due}`}>
+                            {getExpiresMessage(task.expiresAt)}
+                        </div>
                     )}
                     <div
                         className={`${styles.card_tag} ${

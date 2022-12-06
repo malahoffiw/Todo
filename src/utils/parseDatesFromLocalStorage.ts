@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import { CommentsList, GlobalState, TasksList } from "../types"
+import { CommentsList, GlobalState, SubTasksList, TasksList } from "../types"
 
 export const parseDatesFromLocalStorage = (state: GlobalState): GlobalState => {
     for (let project of Object.values(state.projects)) {
@@ -17,10 +17,19 @@ const parseTasksDatesFromLocalStorage = (tasks: TasksList) => {
         if (task.expiresAt) task.expiresAt = dayjs(task.expiresAt)
 
         parseCommentsDatesFromLocalStorage(task.comments)
-        // parseSubTasksDatesFromLocalStorage
+        parseSubTasksDatesFromLocalStorage(task.subtasks)
     }
 
     return tasks
+}
+
+const parseSubTasksDatesFromLocalStorage = (subtasks: SubTasksList) => {
+    for (let subtask of Object.values(subtasks)) {
+        subtask.createdAt = dayjs(subtask.createdAt)
+        if (subtask.expiresAt) subtask.expiresAt = dayjs(subtask.expiresAt)
+    }
+
+    return subtasks
 }
 
 const parseCommentsDatesFromLocalStorage = (comments: CommentsList) => {

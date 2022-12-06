@@ -1,16 +1,18 @@
 import {
-    CHANGE_TASK_STATUS,
     CREATE_COMMENT,
     CREATE_PROJECT,
+    CREATE_SUBTASK,
     CREATE_TASK,
     DELETE_COMMENT,
     DELETE_PROJECT,
+    DELETE_SUBTASK,
     DELETE_TASK,
     MODIFY_COMMENT,
     MODIFY_PROJECT,
+    MODIFY_SUBTASK,
     MODIFY_TASK,
 } from "../types"
-import { GlobalState, Project, Task, Comment, Status } from "../../types"
+import { GlobalState, Project, Task, Comment, SubTask } from "../../types"
 import tasksReducer from "./tasksReducer"
 import { getNextId } from "../../utils/getNextId"
 import dayjs from "dayjs"
@@ -22,7 +24,8 @@ export type RootAction = {
     project?: Project
     taskId?: number
     task?: Task
-    status?: Status
+    subTask?: SubTask
+    subTaskId?: number
     comment?: Comment
     commentId?: number
 }
@@ -70,10 +73,10 @@ const rootReducer = (
             return {
                 projects: {
                     ...state.projects,
-                    [action.project.id]: {
-                        ...state.projects[action.project.id],
+                    [action.projectId]: {
+                        ...state.projects[action.projectId],
                         tasks: tasksReducer(
-                            state.projects[action.project.id].tasks,
+                            state.projects[action.projectId].tasks,
                             {
                                 type: CREATE_TASK,
                                 task: action.task,
@@ -86,10 +89,10 @@ const rootReducer = (
             return {
                 projects: {
                     ...state.projects,
-                    [action.project.id]: {
-                        ...state.projects[action.project.id],
+                    [action.projectId]: {
+                        ...state.projects[action.projectId],
                         tasks: tasksReducer(
-                            state.projects[action.project.id].tasks,
+                            state.projects[action.projectId].tasks,
                             {
                                 type: MODIFY_TASK,
                                 task: action.task,
@@ -102,30 +105,64 @@ const rootReducer = (
             return {
                 projects: {
                     ...state.projects,
-                    [action.project.id]: {
-                        ...state.projects[action.project.id],
+                    [action.projectId]: {
+                        ...state.projects[action.projectId],
                         tasks: tasksReducer(
-                            state.projects[action.project.id].tasks,
+                            state.projects[action.projectId].tasks,
                             {
                                 type: DELETE_TASK,
-                                task: action.task,
+                                taskId: action.taskId,
                             }
                         ),
                     },
                 },
             }
-        case CHANGE_TASK_STATUS:
+        case CREATE_SUBTASK:
             return {
                 projects: {
                     ...state.projects,
-                    [action.project.id]: {
-                        ...state.projects[action.project.id],
+                    [action.projectId]: {
+                        ...state.projects[action.projectId],
                         tasks: tasksReducer(
-                            state.projects[action.project.id].tasks,
+                            state.projects[action.projectId].tasks,
                             {
-                                type: CHANGE_TASK_STATUS,
-                                task: action.task,
-                                status: action.status,
+                                type: CREATE_SUBTASK,
+                                taskId: action.taskId,
+                                subTask: action.subTask,
+                            }
+                        ),
+                    },
+                },
+            }
+        case MODIFY_SUBTASK:
+            return {
+                projects: {
+                    ...state.projects,
+                    [action.projectId]: {
+                        ...state.projects[action.projectId],
+                        tasks: tasksReducer(
+                            state.projects[action.projectId].tasks,
+                            {
+                                type: MODIFY_SUBTASK,
+                                taskId: action.taskId,
+                                subTask: action.subTask,
+                            }
+                        ),
+                    },
+                },
+            }
+        case DELETE_SUBTASK:
+            return {
+                projects: {
+                    ...state.projects,
+                    [action.projectId]: {
+                        ...state.projects[action.projectId],
+                        tasks: tasksReducer(
+                            state.projects[action.projectId].tasks,
+                            {
+                                type: DELETE_SUBTASK,
+                                taskId: action.taskId,
+                                subTaskId: action.subTaskId,
                             }
                         ),
                     },

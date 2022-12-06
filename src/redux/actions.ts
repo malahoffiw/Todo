@@ -1,16 +1,18 @@
 import {
-    CHANGE_TASK_STATUS,
     CREATE_COMMENT,
     CREATE_PROJECT,
+    CREATE_SUBTASK,
     CREATE_TASK,
     DELETE_COMMENT,
     DELETE_PROJECT,
+    DELETE_SUBTASK,
     DELETE_TASK,
     MODIFY_COMMENT,
     MODIFY_PROJECT,
+    MODIFY_SUBTASK,
     MODIFY_TASK,
 } from "./types"
-import { Comment, Project, Status, Task } from "../types"
+import { Comment, SubTask, Task } from "../types"
 
 export const createProject = (projectLabel: string) => {
     return {
@@ -18,12 +20,14 @@ export const createProject = (projectLabel: string) => {
         projectLabel,
     }
 }
+
 export const deleteProject = (projectId: number) => {
     return {
         type: DELETE_PROJECT,
         projectId,
     }
 }
+
 export const modifyProject = (projectId: number, projectLabel: string) => {
     return {
         type: MODIFY_PROJECT,
@@ -31,39 +35,70 @@ export const modifyProject = (projectId: number, projectLabel: string) => {
         projectLabel,
     }
 }
-export const createTask = (project: Project, task: Task) => {
+
+export const createTask = (projectId: number, task: Task) => {
     return {
         type: CREATE_TASK,
-        project,
+        projectId,
         task,
     }
 }
-export const deleteTask = (project: Project, task: Task) => {
+
+export const deleteTask = (projectId: number, taskId: number) => {
     return {
         type: DELETE_TASK,
-        project,
-        task,
+        projectId,
+        taskId,
     }
 }
-export const modifyTask = (project: Project, task: Task) => {
+
+export const modifyTask = (projectId: number, task: Task) => {
     return {
         type: MODIFY_TASK,
-        project,
+        projectId,
         task,
     }
 }
-export const changeTaskStatus = (
-    project: Project,
-    task: Task,
-    status: Status
+
+export const createSubTask = (
+    projectId: number,
+    taskId: number,
+    subTask: SubTask
 ) => {
     return {
-        type: CHANGE_TASK_STATUS,
-        project,
-        task,
-        status,
+        type: CREATE_SUBTASK,
+        projectId,
+        taskId,
+        subTask,
     }
 }
+
+export const deleteSubTask = (
+    projectId: number,
+    taskId: number,
+    subTaskId: number
+) => {
+    return {
+        type: DELETE_SUBTASK,
+        projectId,
+        taskId,
+        subTaskId,
+    }
+}
+
+export const modifySubTask = (
+    projectId: number,
+    taskId: number,
+    subTask: SubTask
+) => {
+    return {
+        type: MODIFY_SUBTASK,
+        projectId,
+        taskId,
+        subTask,
+    }
+}
+
 export const createComment = (
     projectId: number,
     taskId: number,
@@ -76,6 +111,7 @@ export const createComment = (
         comment,
     }
 }
+
 export const deleteComment = (
     projectId: number,
     taskId: number,
@@ -88,6 +124,7 @@ export const deleteComment = (
         commentId,
     }
 }
+
 export const modifyComment = (
     projectId: number,
     taskId: number,

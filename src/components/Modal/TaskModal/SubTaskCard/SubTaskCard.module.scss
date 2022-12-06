@@ -1,0 +1,31 @@
+@import "../../../../styles/colors";
+@import "../../../../styles/font";
+@import "../../../../styles/mixins";
+
+.done {
+    opacity: 40%;
+}
+
+.card {
+    margin-inline: 5px;
+    position: relative;
+    width: max-content;
+    line-height: 35px;
+    padding-inline: 30px 15px;
+    background-color: $textActive;
+    color: $backGray;
+    border-radius: 5px;
+
+    .high {
+        @include subTaskPriorityTag;
+        background-color: $redLight;
+    }
+    .regular {
+        @include subTaskPriorityTag;
+        background-color: $orangeLight;
+    }
+    .low {
+        @include subTaskPriorityTag;
+        background-color: $greenLight;
+    }
+}

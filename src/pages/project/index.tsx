@@ -1,55 +1,24 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { DragDropContext, DropResult } from "react-beautiful-dnd"
-import dayjs, { Dayjs } from "dayjs"
 import { Editor } from "tinymce"
-import { IMeta } from "react-dropzone-uploader"
-import {
-    createComment,
-    createTask,
-    deleteTask,
-    modifyComment,
-    modifyTask,
-} from "../../redux/actions"
+import { createComment, modifyComment, modifyTask } from "../../redux/actions"
 import { useAppDispatch, useAppSelector } from "../../hooks/redux"
-import { Priority, Status, Task, CommentsList, Comment } from "../../types"
+import useMainTaskModalData from "../../hooks/useMainTaskModalData"
+import { Status, Comment } from "../../types"
 import Modal from "../../components/Modal/Modal"
 import Section from "../../components/projectPage/Section/Section"
 import Header from "../../components/Header/Header"
 import TaskModal from "../../components/Modal/TaskModal/TaskModal"
-import { getNextId } from "../../utils/getNextId"
 import styles from "./ProjectPage.module.scss"
 
-const statuses: Record<Status, string> = {
+export const statuses: Record<Status, string> = {
     queue: "Очередь",
     development: "В работе",
     done: "Готово",
 }
 
-export type TaskModalContent = {
-    label: string
-    description: string
-    priority: Priority
-    expiresAt: Dayjs
-    comments: CommentsList
-    files: IMeta[]
-}
-
-export type ModalData = {
-    type: string
-    data: TaskModalContent
-}
-
-const initialModalContent: TaskModalContent = {
-    label: "",
-    description: '<p style="text-align: center;">Описание</p><hr/><br/>',
-    priority: "regular",
-    expiresAt: null,
-    comments: {},
-    files: [],
-}
-
-const Project = (): JSX.Element => {
+const Project = () => {
     const dispatch = useAppDispatch()
     const editorRef = useRef<Editor>(null)
     const { projectId } = useParams()
@@ -59,91 +28,19 @@ const Project = (): JSX.Element => {
     )
 
     const [isModalVisible, setIsModalVisible] = useState(false)
+    const {
+        modalData,
+        setModalData,
+        onSubmit,
+        closeModal,
+        deleteCurrentTask,
+        selectedTask,
+        setSelectedTask,
+        selectedTaskId,
+        setNewTaskStatus,
+    } = useMainTaskModalData(project, editorRef, setIsModalVisible)
 
-    const closeModal = () => {
-        setSelectedTask(null)
-        setModalData({
-            type: "new",
-            data: initialModalContent,
-        })
-        setIsModalVisible(false)
-    }
-
-    const [newTaskStatus, setNewTaskStatus] = useState<Status>("queue")
-    const [selectedTask, setSelectedTask] = useState<Task>(null)
-    const [selectedTaskId, setSelectedTaskId] = useState(0)
-
-    const [modalData, setModalData] = useState<ModalData>({
-        type: "new",
-        data: initialModalContent,
-    })
-
-    useEffect(() => {
-        if (selectedTask === null) {
-            setModalData({
-                type: "new",
-                data: initialModalContent,
-            })
-            setSelectedTaskId(0)
-        } else {
-            setModalData({
-                type: "existing",
-                data: {
-                    label: selectedTask.label,
-                    description: selectedTask.description,
-                    priority: selectedTask.priority,
-                    expiresAt: selectedTask.expiresAt,
-                    comments: selectedTask.comments,
-                    files: selectedTask.files,
-                },
-            })
-            setSelectedTaskId(selectedTask.id)
-        }
-    }, [selectedTask])
-
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        let newTask: Task
-
-        if (modalData.type === "new") {
-            newTask = {
-                id: getNextId(project.tasks),
-                status: newTaskStatus,
-                label: modalData.data.label,
-                description: editorRef.current.getContent(),
-                createdAt: dayjs(),
-                expiresAt: modalData.data.expiresAt || undefined,
-                priority: modalData.data.priority,
-                comments: modalData.data.comments,
-                files: modalData.data.files,
-                subtasks: [],
-            }
-
-            dispatch(createTask(project, newTask))
-        } else {
-            newTask = {
-                id: selectedTask.id,
-                status: selectedTask.status,
-                label: modalData.data.label,
-                description: editorRef.current.getContent(),
-                createdAt: dayjs(),
-                expiresAt: modalData.data.expiresAt || undefined,
-                priority: modalData.data.priority,
-                comments: modalData.data.comments,
-                files: modalData.data.files,
-                subtasks: [],
-            }
-
-            dispatch(modifyTask(project, newTask))
-        }
-
-        closeModal()
-    }
-
-    const deleteCurrentTask = () => {
-        setSelectedTaskId(0)
-        dispatch(deleteTask(project, selectedTask))
-    }
+    const [searchQuery, setSearchQuery] = useState("")
 
     const sections = []
     for (let [id, name] of Object.entries(statuses)) {
@@ -156,6 +53,7 @@ const Project = (): JSX.Element => {
                 setIsModalVisible={setIsModalVisible}
                 setNewTaskStatus={setNewTaskStatus}
                 setSelectedTask={setSelectedTask}
+                searchQuery={searchQuery}
             />
         )
     }
@@ -171,15 +69,20 @@ const Project = (): JSX.Element => {
         )
             return
 
-        const newTask = project.tasks[Number(draggableId)]
-        newTask.status = destination.droppableId as Status
+        const draggedTask = project.tasks[Number(draggableId)]
+        draggedTask.status = destination.droppableId as Status
 
-        dispatch(modifyTask(project, newTask))
+        dispatch(modifyTask(project.id, draggedTask))
     }
 
     return (
         <main className={styles.main}>
-            <Header label={"Проект"} backTo={"/"} project={project} />
+            <Header
+                backTo={"/"}
+                project={project}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+            />
             <h1 className={styles.main_label}>{project.label}</h1>
 
             <DragDropContext onDragEnd={onDragEnd}>
@@ -189,13 +92,13 @@ const Project = (): JSX.Element => {
             <Modal isVisible={isModalVisible} closeModal={closeModal}>
                 <TaskModal
                     projectId={project.id}
-                    modalData={modalData}
-                    setModalData={setModalData}
-                    editorRef={editorRef}
-                    onSubmit={onSubmit}
-                    deleteTask={deleteCurrentTask}
-                    closeTaskModal={closeModal}
-                    selectedTaskId={selectedTaskId}
+                    mainModalData={modalData}
+                    setMainModalData={setModalData}
+                    mainEditorRef={editorRef}
+                    onMainSubmit={onSubmit}
+                    deleteMainTask={deleteCurrentTask}
+                    closeMainModal={closeModal}
+                    selectedMainTaskId={selectedTaskId}
                     submitComment={(comment: Comment, type: string) => {
                         if (type === "new")
                             dispatch(

@@ -34,7 +34,6 @@ const TaskEditor = ({ editorRef, initialContent }: TaskEditorProps) => {
                     "preview",
                     "searchreplace",
                     "visualblocks",
-                    "fullscreen",
                     "media",
                     "table",
                     "help",
@@ -42,6 +41,7 @@ const TaskEditor = ({ editorRef, initialContent }: TaskEditorProps) => {
                     "quickbars",
                     "image",
                     "editimage",
+                    "fullscreen",
                 ],
                 quickbars_selection_toolbar:
                     "bold italic underline backcolor forecolor | fontsize fontfamily | quicklink blockquote | removeformat",

@@ -1,14 +1,17 @@
-import { Comment, Status, Task, TasksList } from "../../types"
+import { Comment, Status, SubTask, Task, TasksList } from "../../types"
 import {
-    CHANGE_TASK_STATUS,
     CREATE_COMMENT,
+    CREATE_SUBTASK,
     CREATE_TASK,
     DELETE_COMMENT,
+    DELETE_SUBTASK,
     DELETE_TASK,
     MODIFY_COMMENT,
+    MODIFY_SUBTASK,
     MODIFY_TASK,
 } from "../types"
 import commentsReducer from "./commentsReducer"
+import subTasksReducer from "./subTasksReducer"
 
 export type TasksAction = {
     type: string
@@ -17,6 +20,8 @@ export type TasksAction = {
     status?: Status
     comment?: Comment
     commentId?: number
+    subTask?: SubTask
+    subTaskId?: number
 }
 
 const tasksReducer = (state: TasksList, action: TasksAction): TasksList => {
@@ -32,14 +37,39 @@ const tasksReducer = (state: TasksList, action: TasksAction): TasksList => {
                 [action.task.id]: action.task,
             }
         case DELETE_TASK:
-            const { [action.task.id]: _, ...rest } = state
+            const { [action.taskId]: _, ...rest } = state
             return rest
-        case CHANGE_TASK_STATUS:
+        case CREATE_SUBTASK:
             return {
                 ...state,
-                [action.task.id]: {
-                    ...state[action.task.id],
-                    status: action.status,
+                [action.taskId]: {
+                    ...state[action.taskId],
+                    subtasks: subTasksReducer(state[action.taskId].subtasks, {
+                        type: CREATE_SUBTASK,
+                        subTask: action.subTask,
+                    }),
+                },
+            }
+        case MODIFY_SUBTASK:
+            return {
+                ...state,
+                [action.taskId]: {
+                    ...state[action.taskId],
+                    subtasks: subTasksReducer(state[action.taskId].subtasks, {
+                        type: MODIFY_SUBTASK,
+                        subTask: action.subTask,
+                    }),
+                },
+            }
+        case DELETE_SUBTASK:
+            return {
+                ...state,
+                [action.taskId]: {
+                    ...state[action.taskId],
+                    subtasks: subTasksReducer(state[action.taskId].subtasks, {
+                        type: DELETE_SUBTASK,
+                        subTaskId: action.subTaskId,
+                    }),
                 },
             }
         case CREATE_COMMENT:
