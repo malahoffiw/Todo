@@ -1,20 +1,20 @@
 @import "../../../styles/colors";
 @import "../../../styles/font";
+@import "../../../styles/mixins";
 
 .back {
-    background-color: $backGray;
-    height: 200px;
+    @include modalBackground;
+    height: 237px;
     width: 100%;
-    text-align: center;
-    border-bottom: 1px solid $textInActive;
 
     .label {
-        line-height: 50px;
+        @include modalLabel;
     }
 
     .features {
-        margin-top: 12px;
-        padding-inline: 40px;
+        border-top: 1px solid $textInActive;
+        padding: 20px 40px;
+        background-color: $backGray;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -30,13 +30,15 @@
         }
     }
 
-    .btnSubmit {
-        margin-top: 15px;
+    .btn {
         width: 100%;
-        background-color: $backGray;
-        color: $textActive;
-        font-size: $fzRegular;
-        border: none;
-        line-height: 48px;
+        @include btn;
+        @include hover;
+    }
+
+    @media (min-width: 1024px) {
+        width: 500px;
+        height: 238px;
+        border: 1px solid $textInActive;
     }
 }

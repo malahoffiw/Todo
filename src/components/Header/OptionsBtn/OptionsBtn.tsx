@@ -1,14 +1,16 @@
 import React, { useState } from "react"
-import styles from "./OptionsBtn.module.scss"
+import { useNavigate } from "react-router-dom"
+import { useAppDispatch } from "../../../hooks/redux"
+import { deleteProject } from "../../../redux/actions"
+import { Project } from "../../../types"
 import Modal from "../../Modal/Modal"
 import ProjectModal from "../../Modal/ProjectModal/ProjectModal"
-import { useAppDispatch } from "../../../hooks/redux"
-import { Project } from "../../../types"
 import ProjectFeaturesModal, {
     TasksStats,
 } from "../../Modal/ProjectFeaturesModal/ProjectFeaturesModal"
-import DeleteProjectModal from "../../Modal/DeleteProjectModal/DeleteProjectModal"
 import OptionsModal from "../../Modal/OptionsModal/OptionsModal"
+import DeleteModal from "../../Modal/DeleteModal/DeleteModal"
+import styles from "./OptionsBtn.module.scss"
 
 type OptionsBtnProps = {
     isOptionsVisible: boolean
@@ -21,6 +23,7 @@ const OptionsBtn = ({
     setIsOptionsVisible,
     project,
 }: OptionsBtnProps) => {
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)
     const [isModifyModalVisible, setIsModifyModalVisible] = useState(false)
@@ -101,11 +104,14 @@ const OptionsBtn = ({
                 isVisible={isDeleteModalVisible}
                 closeModal={closeModalDelete}
             >
-                <DeleteProjectModal
+                <DeleteModal
+                    label={`Вы уверены, что хотите удалить проект ${project.label}?`}
+                    submessage={`Действие приведет к удалению всех (${projectTasks.amountAll}) задач проекта`}
+                    deleteItem={() => {
+                        dispatch(deleteProject(project.id))
+                        navigate("/")
+                    }}
                     closeModal={closeModalDelete}
-                    label={project.label}
-                    id={project.id}
-                    tasksAmount={projectTasks.amountAll}
                 />
             </Modal>
         </>

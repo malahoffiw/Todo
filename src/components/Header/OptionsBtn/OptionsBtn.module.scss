@@ -1,15 +1,13 @@
 @import "../../../styles/colors";
 @import "../../../styles/font";
+@import "../../../styles/mixins";
 
 .btn {
-    position: relative;
+    @include btn;
     min-width: 50px;
     height: 100%;
-    background-color: $backGray;
-    color: $textActive;
-    border: none;
-    outline: none;
-    cursor: pointer;
+
+    @include hover;
 
     &>p {
         font-size: $fzLarge;

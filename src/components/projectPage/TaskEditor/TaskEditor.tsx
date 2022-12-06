@@ -49,10 +49,9 @@ const TaskEditor = ({ editorRef, initialContent }: TaskEditorProps) => {
                     "quickimage quicktable media | bullist numlist checklist",
                 quickbars_image_toolbar: "alignleft aligncenter alignright ",
                 toolbar:
-                    "fullscreen export undo redo | styles | bold italic underline backcolor forecolor align | " +
+                    "fullscreen export undo redo | styles | bold italic underline backcolor forecolor | " +
                     "bullist numlist checklist | " +
-                    "fontsize fontfamily" +
-                    "| table charmap emoticons image media | removeformat help",
+                    "fontsize fontfamily",
                 menu: {
                     file: {
                         title: "File",

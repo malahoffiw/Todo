@@ -2,14 +2,8 @@ import React, { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { DragDropContext, DropResult } from "react-beautiful-dnd"
 import dayjs, { Dayjs } from "dayjs"
-import { useAppDispatch, useAppSelector } from "../../hooks/redux"
-import Modal from "../../components/Modal/Modal"
-import { Priority, Status, Task, CommentsList, Comment } from "../../types"
-import Section from "../../components/projectPage/Section/Section"
-import styles from "./ProjectPage.module.scss"
-import Header from "../../components/Header/Header"
-import TaskModal from "../../components/Modal/TaskModal/TaskModal"
-import { getNextId } from "../../utils/getNextId"
+import { Editor } from "tinymce"
+import { IMeta } from "react-dropzone-uploader"
 import {
     createComment,
     createTask,
@@ -17,7 +11,14 @@ import {
     modifyComment,
     modifyTask,
 } from "../../redux/actions"
-import { Editor } from "tinymce"
+import { useAppDispatch, useAppSelector } from "../../hooks/redux"
+import { Priority, Status, Task, CommentsList, Comment } from "../../types"
+import Modal from "../../components/Modal/Modal"
+import Section from "../../components/projectPage/Section/Section"
+import Header from "../../components/Header/Header"
+import TaskModal from "../../components/Modal/TaskModal/TaskModal"
+import { getNextId } from "../../utils/getNextId"
+import styles from "./ProjectPage.module.scss"
 
 const statuses: Record<Status, string> = {
     queue: "Очередь",
@@ -31,6 +32,7 @@ export type TaskModalContent = {
     priority: Priority
     expiresAt: Dayjs
     comments: CommentsList
+    files: IMeta[]
 }
 
 export type ModalData = {
@@ -44,6 +46,7 @@ const initialModalContent: TaskModalContent = {
     priority: "regular",
     expiresAt: null,
     comments: {},
+    files: [],
 }
 
 const Project = (): JSX.Element => {
@@ -91,6 +94,7 @@ const Project = (): JSX.Element => {
                     priority: selectedTask.priority,
                     expiresAt: selectedTask.expiresAt,
                     comments: selectedTask.comments,
+                    files: selectedTask.files,
                 },
             })
             setSelectedTaskId(selectedTask.id)
@@ -111,7 +115,7 @@ const Project = (): JSX.Element => {
                 expiresAt: modalData.data.expiresAt || undefined,
                 priority: modalData.data.priority,
                 comments: modalData.data.comments,
-                files: [],
+                files: modalData.data.files,
                 subtasks: [],
             }
 
@@ -126,7 +130,7 @@ const Project = (): JSX.Element => {
                 expiresAt: modalData.data.expiresAt || undefined,
                 priority: modalData.data.priority,
                 comments: modalData.data.comments,
-                files: [],
+                files: modalData.data.files,
                 subtasks: [],
             }
 
@@ -176,10 +180,10 @@ const Project = (): JSX.Element => {
     return (
         <main className={styles.main}>
             <Header label={"Проект"} backTo={"/"} project={project} />
-            <h1 className={styles.label}>{project.label}</h1>
+            <h1 className={styles.main_label}>{project.label}</h1>
 
             <DragDropContext onDragEnd={onDragEnd}>
-                <div className={styles.board}>{sections}</div>
+                <div className={styles.main_board}>{sections}</div>
             </DragDropContext>
 
             <Modal isVisible={isModalVisible} closeModal={closeModal}>

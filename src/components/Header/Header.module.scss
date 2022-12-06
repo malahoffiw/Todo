@@ -1,5 +1,6 @@
 @import "../../styles/colors";
 @import "../../styles/font";
+@import "../../styles/mixins";
 
 .header {
     position: fixed;
@@ -21,6 +22,8 @@
         background-color: $backGray;
         color: $textActive;
         font-size: $fzLarge;
+
+        @include hover;
     }
 
     &_label {

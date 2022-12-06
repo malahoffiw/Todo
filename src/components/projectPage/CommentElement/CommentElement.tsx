@@ -1,6 +1,6 @@
 import React from "react"
 import styles from "./CommentElement.module.scss"
-import { Comment, CommentsList } from "../../../types"
+import { Comment } from "../../../types"
 
 type CommentElementProps = {
     comment: Comment
@@ -49,7 +49,7 @@ const CommentElement = ({
     return (
         <>
             <li className={styles.comment}>
-                <p>{comment.message}</p>
+                <p className={styles.comment_message}>{comment.message}</p>
                 <p className={styles.comment_time}>
                     {comment.createdAt.format("HH:mm DD.MM.YY")}
                 </p>

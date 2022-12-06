@@ -1,0 +1,88 @@
+@import "./colors";
+@import "./font";
+
+@mixin hover {
+    cursor: pointer;
+    transition: all .1s ease-out;
+
+    &:hover {
+        transition: all .1s ease-out;
+        filter: brightness(120%);
+    }
+
+    &:active {
+        transition: all .1s ease-out;
+        filter: brightness(200%);
+    }
+}
+
+@mixin btn {
+    background-color: $backGray;
+    color: $textActive;
+    font-size: $fzRegular;
+    border: none;
+    outline: none;
+    line-height: 50px;
+}
+
+@mixin formBackground {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid $textInActive;
+}
+
+@mixin formInputText {
+    @include btn;
+    padding-inline: 20px;
+    width: 100%;
+}
+
+@mixin modalLabel {
+    background-color: $backGray;
+    line-height: 50px;
+    border-bottom: 1px solid $textInActive;
+}
+
+@mixin modalBackground {
+    background-color: $backBlack;
+    color: $textActive;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-bottom: 1px solid $textInActive;
+}
+
+@mixin modalHeaderWithBtn {
+    .header {
+        @include modalLabel;
+        padding-left: 50px;
+        display: flex;
+        align-items: center;
+
+        &_btn {
+            position: relative;
+            min-width: 50px;
+            height: 100%;
+            background-color: $backGray;
+            color: $textActive;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: $fzLarge;
+
+            @media (min-width: 1024px) {
+                display: none;
+            }
+        }
+
+        &_label {
+            margin-inline: auto;
+        }
+
+        @media (min-width: 1024px) {
+            padding-left: 0;
+        }
+    }
+}
+

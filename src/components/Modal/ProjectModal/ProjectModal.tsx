@@ -35,16 +35,16 @@ const ProjectModal = ({
             <p className={styles.label}>{!label ? "Новый проект" : "Проект"}</p>
             <form className={styles.form} onSubmit={onSubmit}>
                 <input
-                    className={styles.input}
+                    className={styles.form_input}
                     type="text"
                     value={newProjectLabel}
                     onChange={(e) => setNewProjectLabel(e.target.value)}
                     required
-                    maxLength={50}
+                    maxLength={20}
                     placeholder="Название"
                     autoFocus={true}
                 />
-                <button className={styles.btnSubmit} type="submit">
+                <button className={styles.form_btn} type="submit">
                     {!label ? "Создать" : "Сохранить"}
                 </button>
             </form>

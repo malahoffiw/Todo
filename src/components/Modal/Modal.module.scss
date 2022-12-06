@@ -8,7 +8,6 @@
     display: flex;
     justify-content: center;
     background-color: $backModal;
-
 }
 
 .visible {
@@ -29,5 +28,5 @@
 
 .hidden>* {
     transition: all .2s ease-out;
-    transform: translateY(-100%);
+    transform: translateY(-110%);
 }

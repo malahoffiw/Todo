@@ -1,4 +1,5 @@
 @import "../../../styles/colors";
+@import "../../../styles/mixins";
 
 .section {
     flex-shrink: 0;
@@ -12,7 +13,7 @@
     border: 1px solid $backGray;
     overflow: hidden;
 
-    &Label {
+    &_label {
         width: 100%;
         line-height: 45px;
         text-align: center;
@@ -29,23 +30,27 @@
         background-color: $greenDark;
     }
 
-    .newTask {
+    &_newTask {
         width: 195px;
         min-height: 60px;
         background-color: $backGray;
+        color: $textActive;
+        outline: none;
         display: grid;
         place-items: center;
         border-radius: 5px;
         border: 1px solid $textInActive;
 
-        .plus {
+        &_plus {
             transform: scale(200%);
         }
+
+        @include hover
     }
 
-    .taskList {
+    &_taskList {
         padding: 20px 0;
-        width: 100%;
+        width: 205px;
         height: calc(100% - 135px);
         list-style: none;
         display: flex;

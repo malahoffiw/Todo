@@ -1,40 +1,33 @@
 @import "../../../styles/colors";
 @import "../../../styles/font";
+@import "../../../styles/mixins";
 
 .back {
-    background-color: $backGray;
-    height: 150px;
+    @include modalBackground;
+    height: 173px;
     width: 100%;
-    text-align: center;
-    border-bottom: 1px solid $textInActive;
 
     .label {
-        line-height: 50px;
+        @include modalLabel;
     }
 
     .form {
-        display: flex;
-        flex-direction: column;
+        @include formBackground;
 
-        .input {
-            padding: 0 20px;
-            width: 100%;
-            height: 50px;
-            background-color: $backGray;
-            color: $textActive;
-            font-size: $fzRegular;
+        &_input {
+            @include formInputText;
             font-weight: $fwBold;
-            outline: none;
-            border: none;
-            border-bottom: 1px solid $textInActive;
         }
 
-        .btnSubmit {
-            background-color: $backGray;
-            color: $textActive;
-            font-size: $fzRegular;
-            border: none;
-            line-height: 48px;
+        &_btn {
+            @include btn;
+            @include hover;
         }
+    }
+
+    @media (min-width: 1024px) {
+        height: 174px;
+        width: 500px;
+        border: 1px solid $textInActive;
     }
 }

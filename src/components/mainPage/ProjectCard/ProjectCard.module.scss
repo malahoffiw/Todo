@@ -4,12 +4,13 @@
 .card {
     position: relative;
     color: $textActive;
+    max-width: 350px;
 
-    &Label {
+    &_label {
         font-weight: $fwBold;
     }
 
-    &Date {
+    &_date {
         position: absolute;
         top: 10px;
         right: 10px;
@@ -17,7 +18,7 @@
         font-weight: $fwThin;
     }
 
-    &Tasks {
+    &_tasks {
         position: absolute;
         top: 10px;
         left: 10px;

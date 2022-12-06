@@ -1,4 +1,5 @@
 @import "../../styles/defaults";
+@import "../../styles/mixins";
 
 .main {
     margin: 90px 30px 0;
@@ -12,7 +13,7 @@
         font-size: $fzLarge;
     }
 
-    .newProject {
+    &_newProject {
         min-width: 250px;
         width: min(90%, 350px);
         min-height: 140px;
@@ -24,12 +25,14 @@
         border: 1px solid $textInActive;
         cursor: pointer;
 
-        .plus {
+        &_plus {
             transform: scale(200%);
         }
+
+        @include hover
     }
 
-    .projectList {
+    &_projectList {
         height: 100%;
         min-width: 250px;
         width: min(90%, 350px);
@@ -48,6 +51,8 @@
             align-items: center;
             justify-content: center;
             border: 1px solid $textInActive;
+
+            @include hover
         }
 
         @media (min-width: 768px) {

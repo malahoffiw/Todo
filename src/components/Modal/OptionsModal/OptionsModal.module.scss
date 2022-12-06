@@ -1,51 +1,29 @@
 @import "../../../styles/colors";
 @import "../../../styles/font";
+@import "../../../styles/mixins";
 
 .back {
-    background-color: $backBlack;
-    color: $textActive;
-    height: 190px;
+    @include modalBackground;
+    @include modalHeaderWithBtn;
+    height: 223px;
     width: 100%;
-    text-align: center;
-    border-bottom: 1px solid $textInActive;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-
-    .header {
-        background-color: $backGray;
-        display: flex;
-        align-items: center;
-        padding-left: 50px;
-        height: 100%;
-        border-bottom: 1px solid $textInActive;
-
-        .btn {
-            position: relative;
-            min-width: 50px;
-            height: 100%;
-            background-color: $backGray;
-            color: $textActive;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            font-size: $fzLarge;
-        }
-
-        .label {
-            margin-inline: auto;
-        }
-    }
 
     .list {
         list-style: none;
-        background-color: $backGray;
         border-top: 1px solid $textInActive;
 
         &_option {
-            display: grid;
-            place-items: center;
-            height: 40px;
+            background-color: $backGray;
+            line-height: 50px;
+            width: 100%;
+
+            @include hover;
         }
+    }
+    
+    @media (min-width: 1024px) {
+        height: 224px;
+        width: 500px;
+        border: 1px solid $textInActive;
     }
 }

@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from "react"
-import styles from "./CommentsModal.module.scss"
-import { Comment, CommentsList } from "../../../types"
-import { getNextId } from "../../../utils/getNextId"
+import React, { useRef, useState } from "react"
 import dayjs from "dayjs"
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux"
-import Modal from "../Modal"
-import DeleteCommentModal from "../DeleteCommentModal/DeleteCommentModal"
 import { deleteComment } from "../../../redux/actions"
+import { Comment } from "../../../types"
+import { getNextId } from "../../../utils/getNextId"
+import Modal from "../Modal"
 import CommentElement from "../../projectPage/CommentElement/CommentElement"
+import DeleteModal from "../DeleteModal/DeleteModal"
+import styles from "./CommentsModal.module.scss"
 
 type CommentsModalProps = {
     closeModal: () => void
@@ -130,8 +130,9 @@ const CommentsModal = ({
                 isVisible={isDeleteCommentModalVisible}
                 closeModal={closeDeleteModal}
             >
-                <DeleteCommentModal
-                    deleteComment={deleteChosenComment}
+                <DeleteModal
+                    label={"Вы уверены, что хотите удалить комментарий?"}
+                    deleteItem={deleteChosenComment}
                     closeModal={closeDeleteModal}
                 />
             </Modal>

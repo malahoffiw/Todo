@@ -17,9 +17,9 @@ const OptionsModal = ({
     return (
         <div className={styles.back} onClick={(e) => e.stopPropagation()}>
             <div className={styles.header}>
-                <p className={styles.label}>Действия</p>
+                <p className={styles.header_label}>Действия</p>
                 <button
-                    className={styles.btn}
+                    className={styles.header_btn}
                     onClick={() => {
                         setIsOptionsVisible(false)
                     }}
@@ -36,7 +36,7 @@ const OptionsModal = ({
                     }}
                     className={styles.list_option}
                 >
-                    Удалить
+                    <p>Удалить</p>
                 </li>
                 <li
                     onClick={(e) => {
@@ -45,7 +45,7 @@ const OptionsModal = ({
                     }}
                     className={styles.list_option}
                 >
-                    Переименовать
+                    <p>Переименовать</p>
                 </li>
                 <li
                     onClick={(e) => {
@@ -54,7 +54,7 @@ const OptionsModal = ({
                     }}
                     className={styles.list_option}
                 >
-                    Свойства
+                    <p>Свойства</p>
                 </li>
             </ul>
         </div>

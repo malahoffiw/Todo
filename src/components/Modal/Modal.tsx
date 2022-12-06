@@ -25,7 +25,10 @@ const Modal = ({ isVisible, closeModal, children }: ModalProps) => {
                 ${isVisible ? styles.visible : styles.hidden} 
                 ${styles.modal}
             `}
-            onClick={closeModal}
+            onClick={(e) => {
+                e.stopPropagation()
+                closeModal()
+            }}
         >
             {children}
         </div>

@@ -1,15 +1,11 @@
 @import "../../../styles/colors";
 @import "../../../styles/font";
+@import "../../../styles/mixins";
 
 .back {
-    background-color: $backBlack;
+    @include modalBackground;
     width: 100%;
-    height: calc(265px + 50vh);
-    border-bottom: 1px solid $textInActive;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    height: min(calc(371px + 50vh), 95vh);
 
     .header {
         background-color: $backGray;
@@ -18,11 +14,9 @@
         justify-content: space-between;
 
         &_btn {
-            background-color: $backGray;
+            @include btn;
+            @include hover;
             font-size: $fzLarge;
-            color: $textActive;
-            border: none;
-            outline: none;
             width: 50px;
         }
 
@@ -33,24 +27,18 @@
     }
 
     .form {
+        height: calc(100% - 71px);
         display: flex;
         flex-direction: column;
         background-color: $backGray;
         border-top: 1px solid $textInActive;
 
-        .input {
-            padding: 0 20px;
-            width: 100%;
-            height: 50px;
-            background-color: $backGray;
-            font-size: $fzRegular;
+        &_input {
+            @include formInputText;
             font-weight: $fwBold;
-            color: $textActive;
-            outline: none;
-            border: none;
         }
 
-        .select {
+        &_select {
             border: none;
             border-top: 1px solid $textInActive;
             text-align: right;
@@ -61,28 +49,88 @@
             }
 
             &_element {
+                @include hover;
+                @include btn;
                 width: 100%;
-                height: 30px;
-                background-color: $backGray;
-                color: $textActive;
-                font-size: $fzRegular;
-                outline: none;
-                border: none;
+                min-height: 30px;
+                line-height: 30px;
                 padding: 0 15px;
             }
 
             &:last-of-type {
-                margin-bottom: 5px;
+                margin-bottom: 10px;
             }
         }
 
-        .btnSubmit {
-            background-color: $backGray;
-            color: $textActive;
-            font-size: $fzRegular;
-            border: none;
-            border-top: 1px solid $textInActive;
-            line-height: 48px;
+        &_btn {
+            @include btn;
+            @include hover;
         }
+
+        .features {
+            display: flex;
+            flex-direction: column;
+
+            &_subtasks {
+                text-align: left;
+                height: 50px;
+                border: none;
+                border-top: 1px solid $textInActive;
+
+                &_legend {
+                    margin-left: 20px;
+                    font-size: $fzSmall;
+                }
+
+                @media (min-width: 1024px) {
+                    height: 100px;
+                }
+            }
+
+            &_files {
+                text-align: left;
+                height: 50px;
+                border: none;
+                border-top: 1px solid $textInActive;
+
+                &_legend {
+                    margin-left: 20px;
+                    font-size: $fzSmall;
+                }
+
+                &_list {
+                    padding: 0 20px;
+                    margin-top: 10px;
+                    width: 100vw;
+                    display: flex;
+                    gap: 10px;
+                    overflow-x: auto;
+
+                    &_item {
+                        line-height: 25px;
+                        font-weight: $fwThin;
+                        text-decoration: underline;
+                    }
+                }
+
+                @media (min-width: 1024px) {
+                    height: 100px;
+
+                    &_list {
+                        width: 798px;
+
+                        &_item {
+                            line-height: 50px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @media (min-width: 1024px) {
+        width: 1000px;
+        height: 80vh;
+        border: 1px solid $textInActive;
     }
 }

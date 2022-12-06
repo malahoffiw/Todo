@@ -1,28 +1,29 @@
 import React from "react"
-import styles from "./DeleteTaskModal.module.scss"
+import styles from "./DeleteModal.module.scss"
 
-type DeleteTaskModalProps = {
+type DeleteModalProps = {
     label: string
-    deleteTask: () => void
+    submessage?: string
+    deleteItem: () => void
     closeModal: () => void
 }
 
-const DeleteTaskModal = ({
+const DeleteModal = ({
     label,
-    deleteTask,
+    submessage,
+    deleteItem,
     closeModal,
-}: DeleteTaskModalProps) => {
+}: DeleteModalProps) => {
     return (
         <div className={styles.back} onClick={(e) => e.stopPropagation()}>
             <p className={styles.label}>Удаление</p>
             <div className={styles.content}>
-                <p>
-                    Вы уверены, что хотите удалить задачу <b>{label}</b>?
-                </p>
+                <p>{label}</p>
+                <p className={styles.message}>{submessage}</p>
                 <div className={styles.block}>
                     <button
                         className={styles.block_btn}
-                        onClick={() => deleteTask()}
+                        onClick={() => deleteItem()}
                     >
                         Удалить
                     </button>
@@ -38,4 +39,4 @@ const DeleteTaskModal = ({
     )
 }
 
-export default DeleteTaskModal
+export default DeleteModal

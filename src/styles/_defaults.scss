@@ -16,3 +16,25 @@ body {
     height: 100%;
     overflow: hidden;
 }
+
+::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+    background-color: $backBlack;
+
+    @media (hover: none) {
+        display: none;
+    }
+}
+
+::-webkit-scrollbar-thumb {
+    background: $textInActive;
+    border-radius: 5px;
+}
+
+::selection {
+    background: $backGray;
+}
+::-moz-selection {
+    background: $backGray;
+}

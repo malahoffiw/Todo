@@ -1,21 +1,41 @@
 @import "../../../styles/colors";
+@import "../../../styles/font";
 
 .card {
     margin: 5px 0;
     position: relative;
     background-color: $backGray;
     width: 195px;
-    min-height: 100px;
+    min-height: 120px;
     display: grid;
     place-items: center;
     border-radius: 5px;
     border: 1px solid $textInActive;
 
-    .tag {
+    &_tag {
         position: absolute;
         top: 10px;
         width: 193px;
         height: 10px;
+    }
+
+    &_time {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        padding: 2px 5px;
+        font-size: $fzSmall;
+        background-color: $backBlack;
+
+        .minutes {
+            color: $redLight;
+        }
+        .hours {
+            color: $orangeLight;
+        }
+        .days {
+            color: $greenLight;
+        }
     }
 
     .regular {

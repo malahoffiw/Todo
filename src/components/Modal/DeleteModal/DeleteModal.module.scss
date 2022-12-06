@@ -1,0 +1,49 @@
+@import "../../../styles/colors";
+@import "../../../styles/font";
+@import "../../../styles/mixins";
+
+.back {
+    @include modalBackground;
+    height: 240px;
+    width: 100%;
+
+    .label {
+        @include modalLabel;
+    }
+
+    .content {
+        height: 100%;
+        background-color: $backGray;
+        border-top: 1px solid $textInActive;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        &>p {
+            margin-top: 20px;
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: $fzSmall;
+        }
+
+        .block {
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 50px;
+            align-items: center;
+
+            &_btn {
+                @include btn;
+                @include hover;
+            }
+        }
+    }
+
+    @media (min-width: 1024px) {
+        width: 500px;
+        border: 1px solid $textInActive;
+    }
+}

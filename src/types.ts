@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs"
+import { IMeta } from "react-dropzone-uploader"
 
 export interface GlobalState {
     projects: ProjectsList
@@ -21,7 +22,7 @@ export interface Task {
     status: Status
     comments: CommentsList
     subtasks: SubTasksList
-    files: string[]
+    files: IMeta[]
 }
 
 export interface Comment {

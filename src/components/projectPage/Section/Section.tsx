@@ -39,22 +39,22 @@ const Section = ({
 
     return (
         <section key={id} className={styles.section}>
-            <p className={`${styles.sectionLabel} ${styles[id]}`}>{name}</p>
-            <div
+            <p className={`${styles.section_label} ${styles[id]}`}>{name}</p>
+            <button
                 onClick={() => {
                     setNewTaskStatus(id)
                     setIsModalVisible(true)
                 }}
-                className={styles.newTask}
+                className={styles.section_newTask}
             >
-                <p className={styles.plus}>+</p>
-            </div>
+                <p className={styles.section_newTask_plus}>+</p>
+            </button>
             <Droppable droppableId={id}>
                 {(provided) => (
                     <ul
                         ref={provided.innerRef}
                         {...provided.droppableProps}
-                        className={styles.taskList}
+                        className={styles.section_taskList}
                     >
                         {generateTasks(id)}
                         {provided.placeholder}

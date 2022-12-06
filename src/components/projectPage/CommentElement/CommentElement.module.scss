@@ -1,5 +1,6 @@
 @import "../../../styles/colors";
 @import "../../../styles/font";
+@import "../../../styles/mixins";
 
 .replies {
     margin-left: auto;
@@ -12,13 +13,17 @@
 
 .comment {
     position: relative;
-    min-height: 100px;
-    padding: 0 20px 30px;
+    min-height: max-content;
+    padding: 30px 20px 40px;
     width: max(100%, 200px);
     display: flex;
-    align-items: center;
     border: 1px solid $textInActive;
     border-radius: 5px;
+
+    &_message {
+        width: 100%;
+        word-wrap: break-word;
+    }
 
     &_time {
         position: absolute;
@@ -40,8 +45,9 @@
         &>button {
             background-color: $backGray;
             color: $textActive;
-            border: none;
             font-size: $fzLarge;
+            border: none;
+            @include hover;
 
             &:nth-of-type(1) {
                 border-bottom-left-radius: 5px;
