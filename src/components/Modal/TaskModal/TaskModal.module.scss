@@ -169,14 +169,14 @@
     }
 }
 
+.newTask {
+    height: min(calc(321px + 50vh), 95vh);
+}
+
 .subtask {
     height: min(calc(271px + 50vh), 95vh);
 
     @media (min-width: 1024px) {
         height: min(calc(171px + 50vh), 95vh);
     }
-}
-
-.newTask {
-    height: min(calc(321px + 50vh), 95vh);
 }

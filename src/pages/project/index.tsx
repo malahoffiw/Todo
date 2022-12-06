@@ -18,6 +18,8 @@ export const statuses: Record<Status, string> = {
     done: "Готово",
 }
 
+export type SortType = "idUp" | "idDown" | "label" | "priority"
+
 const Project = () => {
     const dispatch = useAppDispatch()
     const editorRef = useRef<Editor>(null)
@@ -41,6 +43,7 @@ const Project = () => {
     } = useMainTaskModalData(project, editorRef, setIsModalVisible)
 
     const [searchQuery, setSearchQuery] = useState("")
+    const [sortType, setSortType] = useState<SortType>("idDown")
 
     const sections = []
     for (let [id, name] of Object.entries(statuses)) {
@@ -54,6 +57,7 @@ const Project = () => {
                 setNewTaskStatus={setNewTaskStatus}
                 setSelectedTask={setSelectedTask}
                 searchQuery={searchQuery}
+                sortType={sortType}
             />
         )
     }
@@ -84,6 +88,19 @@ const Project = () => {
                 setSearchQuery={setSearchQuery}
             />
             <h1 className={styles.main_label}>{project.label}</h1>
+            <label className={styles.main_sort}>
+                Сортировать по
+                <select
+                    className={styles.main_sort_select}
+                    value={sortType}
+                    onChange={(e) => setSortType(e.target.value as SortType)}
+                >
+                    <option value="idDown">Сначала новые</option>
+                    <option value="idUp">Сначала старые</option>
+                    <option value="label">По названию</option>
+                    <option value="priority">По приоритету</option>
+                </select>
+            </label>
 
             <DragDropContext onDragEnd={onDragEnd}>
                 <div className={styles.main_board}>{sections}</div>

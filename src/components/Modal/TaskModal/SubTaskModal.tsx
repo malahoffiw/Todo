@@ -77,6 +77,10 @@ const SubTaskModal = ({
                             &#10531;
                         </button>
                         <p className={styles.header_label}>Новая подзадача</p>
+                        <button
+                            className={styles.header_btn}
+                            onClick={closeModal}
+                        ></button>
                     </div>
                 )}
 
