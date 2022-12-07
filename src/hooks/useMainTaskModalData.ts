@@ -9,7 +9,8 @@ import { getNextId } from "../utils/getNextId"
 
 const initialModalContent: TaskModalContent = {
     label: "",
-    description: '<p style="text-align: center;">Описание</p><hr/><br/>',
+    description:
+        '<p style="text-align: center; font-size: 16px;">Описание</p><hr/><br/>',
     priority: "regular",
     expiresAt: null,
     comments: {},

@@ -1,17 +1,25 @@
 @import "./colors";
 @import "./font";
 
+@mixin transition($duration, $delay: 0s) {
+    -webkit-transition: all $duration $delay ease-out;
+    -moz-transition: all $duration $delay ease-out;
+    -ms-transition: all $duration $delay ease-out;
+    -o-transition: all $duration $delay ease-out;
+    transition: all $duration $delay ease-out;
+}
+
 @mixin hover {
     cursor: pointer;
-    transition: all .1s ease-out;
+    @include transition(.1s);
 
     &:hover {
-        transition: all .1s ease-out;
+        @include transition(.1s);
         filter: brightness(120%);
     }
 
     &:active {
-        transition: all .1s ease-out;
+        @include transition(.1s);
         filter: brightness(200%);
     }
 }

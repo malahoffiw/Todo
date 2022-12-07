@@ -1,4 +1,5 @@
 @import "src/styles/colors";
+@import "src/styles/mixins";
 
 .modal {
     position: absolute;
@@ -16,17 +17,17 @@
 }
 
 .visible>* {
-    transition: all .2s ease-out;
+    @include transition(.2s);
     transform: translateY(0);
 }
 
 .hidden {
     height: 0;
-    transition: z-index 0s .2s;
+    @include transition(0s, .2s);
     z-index: -100;
 }
 
 .hidden>* {
-    transition: all .2s ease-out;
+    @include transition(.2s);
     transform: translateY(-110%);
 }

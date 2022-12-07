@@ -46,7 +46,7 @@ const ProjectModal = ({
                     required
                     maxLength={20}
                     placeholder="Название"
-                    autoFocus={true}
+                    autoFocus={false}
                 />
                 <button className={styles.form_btn} type="submit">
                     {!label ? "Создать" : "Сохранить"}

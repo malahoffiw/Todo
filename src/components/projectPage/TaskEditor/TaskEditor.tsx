@@ -84,7 +84,7 @@ const TaskEditor = ({ editorRef, initialContent }: TaskEditorProps) => {
                     help: { title: "Help", items: "help" },
                 },
                 content_style:
-                    "body { font-family:Helvetica,Arial,sans-serif; font-size:14px; background-color: #2f2f2f; color: #d3d3d3 }",
+                    "body { font-family:Helvetica,Arial,sans-serif; font-size:16px; background-color: #2f2f2f; color: #d3d3d3 }",
                 mobile: {
                     plugins: [
                         "advlist",

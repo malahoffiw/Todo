@@ -14,7 +14,7 @@ body {
     color: $textActive;
     font-size: $fzRegular;
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
 }
 
 ::-webkit-scrollbar {

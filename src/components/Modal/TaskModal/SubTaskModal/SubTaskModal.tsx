@@ -80,7 +80,7 @@ const SubTaskModal = ({
                         required
                         maxLength={20}
                         placeholder="Название"
-                        autoFocus={true}
+                        autoFocus={false}
                     />
                     <div className={styles.form_fieldsets}>
                         <fieldset className={styles.form_select}>
