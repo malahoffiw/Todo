@@ -6,7 +6,7 @@
     @include modalBackground;
     width: 100%;
     height: min(calc(471px + 50vh), 95vh);
-    max-height: 900px;
+    max-height: 850px;
 
     .form {
         height: calc(100% - 71px);
