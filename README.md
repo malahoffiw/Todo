@@ -6,9 +6,6 @@ Deployed at [Vercel](https://todo-tau-one.vercel.app)
 
 # Тестовое задание Front-End
 
-Описание тестового задания на позицию Junior Front-End-разработчика в Uptrader для проверки ваших знаний React.
-
-
 ## Задача
 
 Создать SPA TODO-приложение с использованием React и Redux.
