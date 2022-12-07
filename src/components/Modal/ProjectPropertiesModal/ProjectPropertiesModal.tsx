@@ -1,6 +1,6 @@
 import React from "react"
 import { Project } from "../../../types"
-import styles from "./ProjectFeaturesModal.module.scss"
+import styles from "./ProjectPropertiesModal.module.scss"
 
 type ProjectFeaturesModalProps = {
     closeModal: () => void
