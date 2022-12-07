@@ -11,6 +11,10 @@ type DropzoneModalProps = {
     saveFiles: (files: IMeta[]) => void
 }
 
+/**
+ * Preview of uploaded files displayed in the Dropzone modal window
+ *
+ */
 const Preview = ({ meta }: IPreviewProps) => {
     const { name, previewUrl } = meta
     return (
@@ -27,7 +31,20 @@ const Preview = ({ meta }: IPreviewProps) => {
     )
 }
 
+/**
+ * Modal window to display uploading files zone
+ * available on click and via DnD
+ *
+ */
 const DropzoneModal = ({ closeModal, saveFiles }: DropzoneModalProps) => {
+    // On submit saves uploaded files to Task Modal Data
+    // not straight to the state
+    // They will be saved to the state when the Task is saved
+    //
+    // Also File objects cannot be saved at the Redux state
+    // because they cannot be serialized for localStorage
+    // (and this project currently has no backend),
+    // so I only save the Metadata of files there
     const handleSubmit: IDropzoneProps["onSubmit"] = (files) => {
         saveFiles(files.map((file) => file.meta))
         files.forEach((f) => f.remove())

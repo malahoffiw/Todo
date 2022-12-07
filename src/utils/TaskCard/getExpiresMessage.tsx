@@ -1,12 +1,16 @@
 import React from "react"
 import dayjs, { Dayjs } from "dayjs"
-import styles from "../components/projectPage/TaskCard/TaskCard.module.scss"
 import getNoun from "./getNoun"
+import styles from "../../components/projectPage/Section/TaskCard/TaskCard.module.scss"
 
 const FIVE_MINUTES_IN_MS = 300000
 const HOUR_IN_MS = 3600000
 const DAY_IN_MS = 86400000
 
+/**
+ * Generates a string indicating the time remaining to complete the task.
+ *
+ */
 const getExpiresMessage = (expiresAt: Dayjs) => {
     const time = expiresAt.diff(dayjs())
 

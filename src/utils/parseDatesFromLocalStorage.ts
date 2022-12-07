@@ -1,6 +1,11 @@
 import dayjs from "dayjs"
 import { CommentsList, GlobalState, SubTasksList, TasksList } from "../types"
 
+/**
+ * Parses dates received from localStorage
+ * from strings to Dayjs objects.
+ *
+ */
 export const parseDatesFromLocalStorage = (state: GlobalState): GlobalState => {
     for (let project of Object.values(state.projects)) {
         project.createdAt = dayjs(project.createdAt)

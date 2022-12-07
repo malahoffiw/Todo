@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react"
 
+/**
+ * Provides access to user screen height and width.
+ *
+ */
 const useWindowParameters = () => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [windowHeight, setWindowHeight] = useState(window.innerHeight)

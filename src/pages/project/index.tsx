@@ -10,6 +10,7 @@ import Modal from "../../components/Modal/Modal"
 import Section from "../../components/projectPage/Section/Section"
 import Header from "../../components/Header/Header"
 import TaskModal from "../../components/Modal/TaskModal/TaskModal"
+import { SortType } from "../../types/components"
 import styles from "./ProjectPage.module.scss"
 
 export const statuses: Record<Status, string> = {
@@ -18,17 +19,18 @@ export const statuses: Record<Status, string> = {
     done: "Готово",
 }
 
-export type SortType = "idUp" | "idDown" | "label" | "priority"
-
 const Project = () => {
-    const dispatch = useAppDispatch()
+    // The ref required for the TinyMCE editor
     const editorRef = useRef<Editor>(null)
+
+    const dispatch = useAppDispatch()
     const { projectId } = useParams()
     const project = useAppSelector((state) => state.projects[Number(projectId)])
     const tasks = useAppSelector(
         (state) => state.projects[Number(projectId)].tasks
     )
 
+    // Collecting things required for a modal task window
     const [isModalVisible, setIsModalVisible] = useState(false)
     const {
         modalData,
@@ -45,6 +47,7 @@ const Project = () => {
     const [searchQuery, setSearchQuery] = useState("")
     const [sortType, setSortType] = useState<SortType>("idDown")
 
+    // Generating tasks sections
     const sections = []
     for (let [id, name] of Object.entries(statuses)) {
         sections.push(
@@ -62,6 +65,7 @@ const Project = () => {
         )
     }
 
+    // Defines the behavior of the task when dragging is completed.
     const onDragEnd = (result: DropResult) => {
         const { destination, source, draggableId } = result
 

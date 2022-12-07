@@ -8,6 +8,10 @@ type OptionsModalProps = {
     setIsFeaturesModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+/**
+ * Modal window to display options available for the selected project.
+ *
+ */
 const OptionsModal = ({
     setIsOptionsVisible,
     setIsDeleteModalVisible,

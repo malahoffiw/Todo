@@ -1,6 +1,6 @@
 import React from "react"
-import styles from "./CommentElement.module.scss"
 import { Comment } from "../../../types"
+import styles from "./CommentElement.module.scss"
 
 type CommentElementProps = {
     comment: Comment
@@ -16,6 +16,10 @@ type CommentElementProps = {
     >
 }
 
+/**
+ * Element displayed in the Comments Modal window.
+ *
+ */
 const CommentElement = ({
     comment,
     setChosenComment,
@@ -25,6 +29,7 @@ const CommentElement = ({
     inputType,
     setInputType,
 }: CommentElementProps) => {
+    // Generates replies for each comment
     const replies = (): JSX.Element[] => {
         const result = []
         for (let [id, reply] of Object.entries(comment.replies)) {
@@ -46,6 +51,7 @@ const CommentElement = ({
 
         return result
     }
+
     return (
         <>
             <li className={styles.comment}>

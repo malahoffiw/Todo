@@ -1,25 +1,18 @@
 import React from "react"
-import { Dayjs } from "dayjs"
+import { Project } from "../../../types"
 import styles from "./ProjectFeaturesModal.module.scss"
 
-export type TasksStats = {
-    amountAll: number
-    amountQueue: number
-    amountDevelopment: number
-    amountDone: number
-}
-
 type ProjectFeaturesModalProps = {
-    label: string
-    tasksStats: TasksStats
-    createdAt: Dayjs
     closeModal: () => void
+    project: Project
 }
 
-const ProjectFeaturesModal = ({
-    label,
-    tasksStats,
-    createdAt,
+/**
+ * Modal window to display some selected project properties
+ *
+ */
+const ProjectPropertiesModal = ({
+    project,
     closeModal,
 }: ProjectFeaturesModalProps) => {
     return (
@@ -29,15 +22,15 @@ const ProjectFeaturesModal = ({
                 <ul className={styles.features}>
                     <li className={styles.features_option}>
                         <p>Название проекта</p>
-                        <p>{label}</p>
+                        <p>{project.label}</p>
                     </li>
                     <li className={styles.features_option}>
                         <p>Всего задач</p>
-                        <p>{tasksStats.amountAll}</p>
+                        <p>{Object.keys(project.tasks).length}</p>
                     </li>
                     <li className={styles.features_option}>
                         <p>Дата создания</p>
-                        <p>{createdAt.format("HH:mm DD.MM.YYYY")}</p>
+                        <p>{project.createdAt.format("HH:mm DD.MM.YYYY")}</p>
                     </li>
                 </ul>
                 <button className={styles.btn} onClick={() => closeModal()}>
@@ -48,4 +41,4 @@ const ProjectFeaturesModal = ({
     )
 }
 
-export default ProjectFeaturesModal
+export default ProjectPropertiesModal

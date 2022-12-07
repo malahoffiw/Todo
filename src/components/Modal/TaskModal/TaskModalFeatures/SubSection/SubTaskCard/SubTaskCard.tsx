@@ -1,6 +1,6 @@
 import React from "react"
 import { Draggable } from "react-beautiful-dnd"
-import { SubTask } from "../../../../types"
+import { SubTask } from "../../../../../../types"
 import styles from "./SubTaskCard.module.scss"
 
 type SubTaskCardProps = {
@@ -9,6 +9,10 @@ type SubTaskCardProps = {
     onClick: () => void
 }
 
+/**
+ * Subtask card displayed in the SubSection.
+ *
+ */
 const SubTaskCard = ({ subtask, index, onClick }: SubTaskCardProps) => {
     return (
         <Draggable draggableId={String(subtask.id)} index={index}>

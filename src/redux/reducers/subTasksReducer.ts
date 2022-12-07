@@ -1,7 +1,7 @@
 import { SubTask, SubTasksList } from "../../types"
 import { CREATE_SUBTASK, DELETE_SUBTASK, MODIFY_SUBTASK } from "../types"
 
-export type SubTaskAction = {
+type SubTaskAction = {
     type: string
     subTask?: SubTask
     subTaskId?: number

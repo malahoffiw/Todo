@@ -1,31 +1,12 @@
-@import "../../../styles/colors";
-@import "../../../styles/font";
-@import "../../../styles/mixins";
+@import "src/styles/colors";
+@import "src/styles/font";
+@import "src/styles/mixins";
 
 .back {
     @include modalBackground;
     width: 100%;
     height: min(calc(471px + 50vh), 95vh);
     max-height: 900px;
-
-    .header {
-        background-color: $backGray;
-        border-bottom: 1px solid $textInActive;
-        display: flex;
-        justify-content: space-between;
-
-        &_btn {
-            @include btn;
-            @include hover;
-            font-size: $fzLarge;
-            width: 50px;
-        }
-
-        &_label {
-            margin-inline: auto;
-            line-height: 50px;
-        }
-    }
 
     .form {
         height: calc(100% - 71px);
@@ -84,87 +65,6 @@
         &_btn {
             @include btn;
             @include hover;
-        }
-
-        .features {
-            display: flex;
-            flex-direction: column;
-
-            @media (min-width: 1024px) {
-                display: grid;
-                grid-template-columns: 50% 50%;
-
-                &_files {
-                    min-height: 150px;
-                }
-            }
-
-            &_subtasks {
-                padding: 5px 20px;
-                text-align: left;
-                height: 150px;
-                width: 100vw;
-                border: none;
-                border-top: 1px solid $textInActive;
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-
-                &_legend {
-                    font-size: $fzSmall;
-                }
-
-                @media (min-width: 1024px) {
-                    width: 50vw;
-                }
-            }
-
-            &_files {
-                text-align: left;
-                height: 50px;
-                border: none;
-                border-top: 1px solid $textInActive;
-
-                &_legend {
-                    margin-left: 20px;
-                    font-size: $fzSmall;
-                }
-
-                &_list {
-                    padding: 0 20px;
-                    margin-top: 10px;
-                    width: 100vw;
-                    display: flex;
-                    gap: 10px;
-                    overflow-x: auto;
-                    list-style: none;
-
-                    &_item {
-                        line-height: 25px;
-                        font-weight: $fwThin;
-                        text-decoration: underline;
-                    }
-                }
-
-                @media (min-width: 1024px) {
-                    height: 100px;
-
-                    &_list {
-                        width: 50vw;
-                        display: grid;
-                        grid-template-rows: repeat(2, 50px);
-                        grid-auto-flow: column;
-
-                        &_item {
-                            line-height: 50px;
-                        }
-                    }
-
-                    &_withoutSubTasks {
-                        width: 100vw;
-                    }
-                }
-            }
         }
     }
 }

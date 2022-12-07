@@ -7,7 +7,12 @@ type ModalProps = {
     closeModal: () => void
 }
 
+/**
+ * Fullscreen wrapper for each modal window
+ *
+ */
 const Modal = ({ isVisible, closeModal, children }: ModalProps) => {
+    // Close modal windows on Esc key click
     useEffect(() => {
         const onKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {

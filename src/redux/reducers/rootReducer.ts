@@ -1,3 +1,4 @@
+import dayjs from "dayjs"
 import {
     CREATE_COMMENT,
     CREATE_PROJECT,
@@ -15,9 +16,8 @@ import {
 import { GlobalState, Project, Task, Comment, SubTask } from "../../types"
 import tasksReducer from "./tasksReducer"
 import { getNextId } from "../../utils/getNextId"
-import dayjs from "dayjs"
 
-export type RootAction = {
+type RootAction = {
     type: string
     projectId?: number
     projectLabel?: string

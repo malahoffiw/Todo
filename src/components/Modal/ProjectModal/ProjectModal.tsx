@@ -10,6 +10,10 @@ type ProjectModalProps = {
     id?: number
 }
 
+/**
+ * Modal window to create and rename project.
+ *
+ */
 const ProjectModal = ({
     dispatch,
     closeModal,

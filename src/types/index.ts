@@ -1,3 +1,5 @@
+// The main interfaces required to describe the Redux state object.
+
 import { Dayjs } from "dayjs"
 import { IMeta } from "react-dropzone-uploader"
 

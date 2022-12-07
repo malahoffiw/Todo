@@ -5,6 +5,10 @@ const MINUTE_IN_MS = 60000
 const HOUR_IN_MS = 3600000
 const DAY_IN_MS = 86400000
 
+/**
+ * Generates a string with the time passed since the task was created.
+ *
+ */
 const getTimeMessage = (createdAt: Dayjs) => {
     const time = dayjs().diff(createdAt)
 

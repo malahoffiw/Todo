@@ -1,7 +1,7 @@
 import { CREATE_COMMENT, DELETE_COMMENT, MODIFY_COMMENT } from "../types"
 import { Comment, CommentsList } from "../../types"
 
-export type CommentsAction = {
+type CommentsAction = {
     type: string
     comment?: Comment
     commentId?: number
@@ -19,6 +19,10 @@ const commentsReducer = (
             }
         case MODIFY_COMMENT: {
             const commentId = action.comment.id
+
+            /**
+             * Recursively traverses the state to find a comment to modify.
+             */
             const goDeeper = (state: CommentsList): CommentsList => {
                 if (state[commentId])
                     return {
@@ -39,6 +43,10 @@ const commentsReducer = (
         }
         case DELETE_COMMENT: {
             const commentId = action.commentId
+
+            /**
+             * Recursively traverses the state to find a comment to delete.
+             */
             const goDeeper = (state: CommentsList): CommentsList => {
                 if (state[commentId]) {
                     const { [commentId]: _, ...rest } = state

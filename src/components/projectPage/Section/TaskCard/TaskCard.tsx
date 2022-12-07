@@ -1,8 +1,8 @@
 import React from "react"
 import { Draggable } from "react-beautiful-dnd"
-import { Task } from "../../../types"
-import getExpiresMessage from "../../../utils/getExpiresMessage"
-import getTimeMessage from "../../../utils/getTimeMessage"
+import { Task } from "../../../../types"
+import getExpiresMessage from "../../../../utils/TaskCard/getExpiresMessage"
+import getTimeMessage from "../../../../utils/TaskCard/getTimeMessage"
 import styles from "./TaskCard.module.scss"
 
 type TaskCardProps = {
@@ -11,6 +11,9 @@ type TaskCardProps = {
     onClick: () => void
 }
 
+/**
+ * Card with some task info displayed in the specific Section.
+ */
 const TaskCard = ({ task, index, onClick }: TaskCardProps) => {
     const label =
         task.label.length > 14 ? task.label.slice(0, 13) + "..." : task.label

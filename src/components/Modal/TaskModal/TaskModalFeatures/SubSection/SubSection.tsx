@@ -1,7 +1,7 @@
 import React from "react"
 import { Droppable } from "react-beautiful-dnd"
-import { Status, SubTask, SubTasksList } from "../../../../types"
-import SubTaskCard from "../SubTaskCard/SubTaskCard"
+import { Status, SubTask, SubTasksList } from "../../../../../types"
+import SubTaskCard from "./SubTaskCard/SubTaskCard"
 import styles from "./SubSection.module.scss"
 
 type SubSectionProps = {
@@ -13,6 +13,10 @@ type SubSectionProps = {
     setSelectedSubTask: React.Dispatch<React.SetStateAction<SubTask>>
 }
 
+/**
+ * A section with subtasks displayed in the Task modal window
+ *
+ */
 const SubSection = ({
     id,
     name,

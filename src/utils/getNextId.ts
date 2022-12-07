@@ -1,5 +1,10 @@
 import { Project, SubTask, Task, Comment } from "../types"
 
+/**
+ * Recursively traverses the map object, collecting ids,
+ * and generates the following one.
+ *
+ */
 export const getNextId = (
     map: Record<number, Project | Task | Comment | SubTask>
 ) => {

@@ -4,13 +4,8 @@ import { Editor } from "tinymce"
 import { useAppDispatch } from "./redux"
 import { createTask, deleteTask, modifyTask } from "../redux/actions"
 import { Project, Status, Task } from "../types"
+import { MainTaskModalData, TaskModalContent } from "../types/components"
 import { getNextId } from "../utils/getNextId"
-
-export type TaskModalContent = Omit<Task, "id" | "createdAt" | "status">
-export type MainTaskModalData = {
-    type: string
-    data: TaskModalContent
-}
 
 const initialModalContent: TaskModalContent = {
     label: "",
@@ -22,6 +17,10 @@ const initialModalContent: TaskModalContent = {
     subtasks: {},
 }
 
+/**
+ * Allows to receive and update information in the task modal window.
+ *
+ */
 const useMainTaskModalData = (
     project: Project,
     editorRef: React.MutableRefObject<Editor>,

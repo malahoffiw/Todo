@@ -5,9 +5,7 @@ import { deleteProject } from "../../../redux/actions"
 import { Project } from "../../../types"
 import Modal from "../../Modal/Modal"
 import ProjectModal from "../../Modal/ProjectModal/ProjectModal"
-import ProjectFeaturesModal, {
-    TasksStats,
-} from "../../Modal/ProjectFeaturesModal/ProjectFeaturesModal"
+import ProjectPropertiesModal from "../../Modal/ProjectFeaturesModal/ProjectPropertiesModal"
 import OptionsModal from "../../Modal/OptionsModal/OptionsModal"
 import DeleteModal from "../../Modal/DeleteModal/DeleteModal"
 import styles from "./OptionsBtn.module.scss"
@@ -18,6 +16,10 @@ type OptionsBtnProps = {
     project: Project
 }
 
+/**
+ * The options button displayed on the right in the header.
+ *
+ */
 const OptionsBtn = ({
     isOptionsVisible,
     setIsOptionsVisible,
@@ -25,34 +27,19 @@ const OptionsBtn = ({
 }: OptionsBtnProps) => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
+
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)
     const [isModifyModalVisible, setIsModifyModalVisible] = useState(false)
     const [isFeaturesModalVisible, setIsFeaturesModalVisible] = useState(false)
 
     const closeModalDelete = () => {
-        setIsOptionsVisible(false)
         setIsDeleteModalVisible(false)
     }
     const closeModalModify = () => {
-        setIsOptionsVisible(false)
         setIsModifyModalVisible(false)
     }
     const closeModalFeatures = () => {
-        setIsOptionsVisible(false)
         setIsFeaturesModalVisible(false)
-    }
-
-    const projectTasks: TasksStats = {
-        amountAll: Object.keys(project.tasks).length,
-        amountQueue: Object.values(project.tasks).reduce((sum, task) => {
-            return task.status === "queue" ? sum + 1 : sum
-        }, 0),
-        amountDevelopment: Object.values(project.tasks).reduce((sum, task) => {
-            return task.status === "development" ? sum + 1 : sum
-        }, 0),
-        amountDone: Object.values(project.tasks).reduce((sum, task) => {
-            return task.status === "done" ? sum + 1 : sum
-        }, 0),
     }
 
     return (
@@ -93,11 +80,9 @@ const OptionsBtn = ({
                 isVisible={isFeaturesModalVisible}
                 closeModal={closeModalFeatures}
             >
-                <ProjectFeaturesModal
+                <ProjectPropertiesModal
                     closeModal={closeModalFeatures}
-                    label={project.label}
-                    createdAt={project.createdAt}
-                    tasksStats={projectTasks}
+                    project={project}
                 />
             </Modal>
             <Modal
@@ -106,7 +91,9 @@ const OptionsBtn = ({
             >
                 <DeleteModal
                     label={`Вы уверены, что хотите удалить проект ${project.label}?`}
-                    submessage={`Действие приведет к удалению всех (${projectTasks.amountAll}) задач проекта`}
+                    submessage={`Действие приведет к удалению всех (${
+                        Object.keys(project.tasks).length
+                    }) задач проекта`}
                     deleteItem={() => {
                         dispatch(deleteProject(project.id))
                         navigate("/")

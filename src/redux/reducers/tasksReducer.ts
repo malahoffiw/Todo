@@ -13,7 +13,7 @@ import {
 import commentsReducer from "./commentsReducer"
 import subTasksReducer from "./subTasksReducer"
 
-export type TasksAction = {
+type TasksAction = {
     type: string
     task?: Task
     taskId?: number

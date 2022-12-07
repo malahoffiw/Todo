@@ -6,6 +6,10 @@ type ProjectCardProps = {
     data: Project
 }
 
+/**
+ * Card of the project displayed on Main page.
+ *
+ */
 const ProjectCard = ({ data }: ProjectCardProps) => {
     const label =
         data.label.length > 14 ? data.label.slice(0, 13) + "..." : data.label

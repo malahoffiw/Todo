@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react"
 import { Editor } from "tinymce"
 import dayjs from "dayjs"
-import { createSubTask, deleteSubTask, modifySubTask } from "../redux/actions"
 import { useAppDispatch } from "./redux"
-import { MainTaskModalData } from "./useMainTaskModalData"
+import { createSubTask, deleteSubTask, modifySubTask } from "../redux/actions"
 import { Status, SubTask } from "../types"
+import {
+    MainTaskModalData,
+    SubTaskModalContent,
+    SubTaskModalData,
+} from "../types/components"
 import { getNextId } from "../utils/getNextId"
-
-export type SubTaskModalContent = Omit<SubTask, "id" | "createdAt" | "status">
-
-export type SubTaskModalData = {
-    type: string
-    data: SubTaskModalContent
-}
 
 const initialModalContent: SubTaskModalContent = {
     label: "",
@@ -21,6 +18,10 @@ const initialModalContent: SubTaskModalContent = {
     expiresAt: null,
 }
 
+/**
+ * Allows to receive and update information in the subtask modal window.
+ *
+ */
 const useSubTaskModalData = (
     projectId: number,
     taskId: number,

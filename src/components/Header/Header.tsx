@@ -12,6 +12,10 @@ type HeaderProps = {
     setSearchQuery?: React.Dispatch<React.SetStateAction<any>>
 }
 
+/**
+ * Header displayed on both pages.
+ *
+ */
 const Header = ({
     label,
     backTo,

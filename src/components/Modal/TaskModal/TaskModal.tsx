@@ -2,20 +2,17 @@ import React, { useRef, useState } from "react"
 import dayjs from "dayjs"
 import { Editor } from "tinymce"
 import { IMeta } from "react-dropzone-uploader"
-import { DragDropContext, DropResult } from "react-beautiful-dnd"
-import { MainTaskModalData } from "../../../hooks/useMainTaskModalData"
-import { modifySubTask } from "../../../redux/actions"
-import { useAppDispatch } from "../../../hooks/redux"
 import useSubTaskModalData from "../../../hooks/useSubTaskModalData"
-import { Priority, Comment, Status } from "../../../types"
+import { Priority, Comment } from "../../../types"
 import TaskEditor from "../../projectPage/TaskEditor/TaskEditor"
 import Modal from "../Modal"
-import CommentsModal from "../CommentsModal/CommentsModal"
-import DropzoneModal from "../DropzoneModal/DropzoneModal"
+import CommentsModal from "./CommentsModal/CommentsModal"
+import DropzoneModal from "./DropzoneModal/DropzoneModal"
 import DeleteModal from "../DeleteModal/DeleteModal"
-import SubSection from "./SubSection/SubSection"
-import SubTaskModal from "./SubTaskModal"
-import { statuses } from "../../../pages/project"
+import SubTaskModal from "./SubTaskModal/SubTaskModal"
+import TaskModalFeatures from "./TaskModalFeatures/TaskModalFeatures"
+import TaskModalHeader from "./TaskModalHeader/TaskModalHeader"
+import { MainTaskModalData } from "../../../types/components"
 import styles from "./TaskModal.module.scss"
 import "react-dropzone-uploader/dist/styles.css"
 
@@ -31,6 +28,10 @@ type TaskModalProps = {
     submitComment?: (comment: Comment, type: string) => void
 }
 
+/**
+ * Modal window to create and manage tasks.
+ *
+ */
 const TaskModal = ({
     projectId,
     mainModalData,
@@ -42,7 +43,6 @@ const TaskModal = ({
     selectedMainTaskId,
     submitComment,
 }: TaskModalProps) => {
-    const dispatch = useAppDispatch()
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)
     const closeDeleteModal = () => setIsDeleteModalVisible(false)
     const openDeleteModal = () => setIsDeleteModalVisible(true)
@@ -53,7 +53,7 @@ const TaskModal = ({
 
     const [isFilesModalVisible, setIsFilesModalVisible] = useState(false)
     const closeFilesModal = () => setIsFilesModalVisible(false)
-    const opesFilesModal = () => setIsFilesModalVisible(true)
+    const openFilesModal = () => setIsFilesModalVisible(true)
 
     const [isSubTaskModalVisible, setIsSubTaskModalVisible] = useState(false)
 
@@ -74,38 +74,6 @@ const TaskModal = ({
         subTaskEditorRef,
         setIsSubTaskModalVisible
     )
-
-    const subSections = []
-    for (let [id, name] of Object.entries(statuses)) {
-        subSections.push(
-            <SubSection
-                key={id}
-                id={id as Status}
-                name={name}
-                subtasks={mainModalData.data.subtasks}
-                setIsSubTaskModalVisible={setIsSubTaskModalVisible}
-                setNewTaskStatus={setNewTaskStatus}
-                setSelectedSubTask={setSelectedSubTask}
-            />
-        )
-    }
-
-    const onDragEnd = (result: DropResult) => {
-        const { destination, source, draggableId } = result
-
-        if (!destination) return
-
-        if (
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        )
-            return
-
-        const draggedSubTask = mainModalData.data.subtasks[Number(draggableId)]
-        draggedSubTask.status = destination.droppableId as Status
-
-        dispatch(modifySubTask(projectId, selectedMainTaskId, draggedSubTask))
-    }
 
     return (
         <>
@@ -172,52 +140,13 @@ const TaskModal = ({
                 }`}
                 onClick={(e) => e.stopPropagation()}
             >
-                {mainModalData.type === "existing" ? (
-                    <div className={styles.header}>
-                        <button
-                            className={styles.header_btn}
-                            onClick={closeMainModal}
-                        >
-                            &#10531;
-                        </button>
-                        <button
-                            className={styles.header_btn}
-                            onClick={openCommentsModal}
-                        >
-                            &#128172;
-                        </button>
-
-                        <p className={styles.header_label}>Задача</p>
-                        <button
-                            className={styles.header_btn}
-                            onClick={opesFilesModal}
-                        >
-                            &#128206;
-                        </button>
-                        <button
-                            className={styles.header_btn}
-                            onClick={openDeleteModal}
-                        >
-                            &#128465;
-                        </button>
-                    </div>
-                ) : (
-                    <div className={styles.header}>
-                        <button
-                            className={styles.header_btn}
-                            onClick={closeMainModal}
-                        >
-                            &#10531;
-                        </button>
-                        <p className={styles.header_label}>Новая задача</p>
-                        <button
-                            className={styles.header_btn}
-                            onClick={opesFilesModal}
-                        >
-                            &#128206;
-                        </button>
-                    </div>
-                )}
+                <TaskModalHeader
+                    mainModalData={mainModalData}
+                    closeMainModal={closeMainModal}
+                    openCommentsModal={openCommentsModal}
+                    openFilesModal={openFilesModal}
+                    openDeleteModal={openDeleteModal}
+                />
 
                 <form className={styles.form} onSubmit={onMainSubmit}>
                     <input
@@ -295,53 +224,14 @@ const TaskModal = ({
                         initialContent={mainModalData.data.description}
                     />
 
-                    <div className={styles.features}>
-                        {mainModalData.type === "existing" && (
-                            <DragDropContext onDragEnd={onDragEnd}>
-                                <fieldset className={styles.features_subtasks}>
-                                    <legend
-                                        className={
-                                            styles.features_subtasks_legend
-                                        }
-                                    >
-                                        Подзадачи
-                                    </legend>
-
-                                    {subSections}
-                                </fieldset>
-                            </DragDropContext>
-                        )}
-                        <fieldset className={styles.features_files}>
-                            <legend className={styles.features_files_legend}>
-                                Вложенные файлы
-                            </legend>
-
-                            <ul
-                                className={`${
-                                    mainModalData.type === "new"
-                                        ? styles.features_files_withoutSubTasks
-                                        : ""
-                                } ${styles.features_files_list}`}
-                            >
-                                {mainModalData.data.files.map((file) => (
-                                    <li
-                                        className={
-                                            styles.features_files_list_item
-                                        }
-                                        key={file.id}
-                                    >
-                                        {file.name.length > 20
-                                            ? `${file.name
-                                                  .split(".")[0]
-                                                  .slice(0, 15)}...${
-                                                  file.name.split(".")[1]
-                                              }`
-                                            : file.name}
-                                    </li>
-                                ))}
-                            </ul>
-                        </fieldset>
-                    </div>
+                    <TaskModalFeatures
+                        projectId={projectId}
+                        selectedMainTaskId={selectedMainTaskId}
+                        mainModalData={mainModalData}
+                        setIsSubTaskModalVisible={setIsSubTaskModalVisible}
+                        setNewTaskStatus={setNewTaskStatus}
+                        setSelectedSubTask={setSelectedSubTask}
+                    />
 
                     <button className={styles.form_btn} type={"submit"}>
                         Сохранить

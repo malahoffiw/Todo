@@ -1,4 +1,9 @@
-export default function getNoun(number: number, nouns: string[]) {
+/**
+ * Selects the correct form of a noun in Russian,
+ * depending on the number related to it.
+ *
+ */
+const getNoun = (number: number, nouns: string[]) => {
     let n = Math.abs(number)
     n %= 100
     if (n >= 5 && n <= 20) {
@@ -13,3 +18,5 @@ export default function getNoun(number: number, nouns: string[]) {
     }
     return nouns[2]
 }
+
+export default getNoun

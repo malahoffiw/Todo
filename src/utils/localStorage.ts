@@ -5,6 +5,10 @@ const initialState: GlobalState = {
     projects: {},
 }
 
+/**
+ * Loads and deserializes Redux state from localStorage.
+ *
+ */
 export const loadState = (): GlobalState => {
     try {
         const serializedState = localStorage.getItem("state")
@@ -18,6 +22,10 @@ export const loadState = (): GlobalState => {
     }
 }
 
+/**
+ * Serializes and saves Redux state to localStorage.
+ *
+ */
 export const saveState = (state: GlobalState) => {
     try {
         const serializedState = JSON.stringify(state)

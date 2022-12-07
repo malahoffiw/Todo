@@ -1,0 +1,32 @@
+@import "src/styles/colors";
+@import "src/styles/font";
+
+.features {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 1024px) {
+        display: grid;
+        grid-template-columns: 50% 50%;
+    }
+
+    &_subtasks {
+        padding: 5px 20px;
+        text-align: left;
+        height: 150px;
+        width: 100vw;
+        border: none;
+        border-top: 1px solid $textInActive;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        &_legend {
+            font-size: $fzSmall;
+        }
+
+        @media (min-width: 1024px) {
+            width: 50vw;
+        }
+    }
+}

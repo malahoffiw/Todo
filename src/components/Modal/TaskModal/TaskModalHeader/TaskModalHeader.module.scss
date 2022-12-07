@@ -1,0 +1,22 @@
+@import "src/styles/colors";
+@import "src/styles/font";
+@import "src/styles/mixins";
+
+.header {
+    background-color: $backGray;
+    border-bottom: 1px solid $textInActive;
+    display: flex;
+    justify-content: space-between;
+
+    &_btn {
+        @include btn;
+        @include hover;
+        font-size: $fzLarge;
+        width: 50px;
+    }
+
+    &_label {
+        margin-inline: auto;
+        line-height: 50px;
+    }
+}

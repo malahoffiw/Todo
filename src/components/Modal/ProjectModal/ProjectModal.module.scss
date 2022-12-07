@@ -1,6 +1,6 @@
-@import "../../../styles/colors";
-@import "../../../styles/font";
-@import "../../../styles/mixins";
+@import "src/styles/colors";
+@import "src/styles/font";
+@import "src/styles/mixins";
 
 .back {
     @include modalBackground;

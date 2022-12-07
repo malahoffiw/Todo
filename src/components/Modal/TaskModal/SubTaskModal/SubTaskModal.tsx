@@ -1,12 +1,13 @@
 import React, { useState } from "react"
 import dayjs from "dayjs"
 import { Editor } from "tinymce"
-import { SubTaskModalData } from "../../../hooks/useSubTaskModalData"
-import { Priority } from "../../../types"
-import Modal from "../Modal"
-import DeleteModal from "../DeleteModal/DeleteModal"
-import TaskEditor from "../../projectPage/TaskEditor/TaskEditor"
-import styles from "./TaskModal.module.scss"
+import { Priority } from "../../../../types"
+import { SubTaskModalData } from "../../../../types/components"
+import Modal from "../../Modal"
+import DeleteModal from "../../DeleteModal/DeleteModal"
+import TaskEditor from "../../../projectPage/TaskEditor/TaskEditor"
+import SubTaskModalHeader from "./SubTaskModalHeader"
+import styles from "../TaskModal.module.scss"
 
 type SubTaskModalProps = {
     modalData: SubTaskModalData
@@ -17,6 +18,10 @@ type SubTaskModalProps = {
     deleteSubTask: () => void
 }
 
+/**
+ * Modal window to create and manage subtasks.
+ *
+ */
 const SubTaskModal = ({
     modalData,
     setModalData,
@@ -36,7 +41,7 @@ const SubTaskModal = ({
                 closeModal={closeDeleteModal}
             >
                 <DeleteModal
-                    label={`Вы уверены, что хотите удалить задачу?`}
+                    label={`Вы уверены, что хотите удалить подзадачу?`}
                     deleteItem={() => {
                         deleteSubTask()
                         closeModal()
@@ -52,37 +57,11 @@ const SubTaskModal = ({
                 }`}
                 onClick={(e) => e.stopPropagation()}
             >
-                {modalData.type === "existing" ? (
-                    <div className={styles.header}>
-                        <button
-                            className={styles.header_btn}
-                            onClick={closeModal}
-                        >
-                            &#10531;
-                        </button>
-                        <p className={styles.header_label}>Подзадача</p>
-                        <button
-                            className={styles.header_btn}
-                            onClick={openDeleteModal}
-                        >
-                            &#128465;
-                        </button>
-                    </div>
-                ) : (
-                    <div className={styles.header}>
-                        <button
-                            className={styles.header_btn}
-                            onClick={closeModal}
-                        >
-                            &#10531;
-                        </button>
-                        <p className={styles.header_label}>Новая подзадача</p>
-                        <button
-                            className={styles.header_btn}
-                            onClick={closeModal}
-                        ></button>
-                    </div>
-                )}
+                <SubTaskModalHeader
+                    modalData={modalData}
+                    closeModal={closeModal}
+                    openDeleteModal={openDeleteModal}
+                />
 
                 <form className={styles.form} onSubmit={onSubmit}>
                     <input

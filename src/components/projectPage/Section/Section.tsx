@@ -1,9 +1,11 @@
 import React from "react"
 import { Droppable } from "react-beautiful-dnd"
 import { Status, Task, TasksList } from "../../../types"
-import TaskCard from "../TaskCard/TaskCard"
+import { SortType } from "../../../types/components"
+import sortTasks from "../../../utils/Section/sortTasks"
+import doesTaskMatchQuery from "../../../utils/Section/doesTaskMatchQuery"
+import TaskCard from "./TaskCard/TaskCard"
 import styles from "./Section.module.scss"
-import { SortType } from "../../../pages/project"
 
 type SectionProps = {
     id: Status
@@ -16,6 +18,10 @@ type SectionProps = {
     sortType: SortType
 }
 
+/**
+ * Section with tasks displayed at the selected Project page.
+ *
+ */
 const Section = ({
     id,
     name,
@@ -26,28 +32,6 @@ const Section = ({
     searchQuery,
     sortType,
 }: SectionProps) => {
-    const sortTasks = (a: Task, b: Task) => {
-        if (sortType === "idDown") return b.id - a.id
-        if (sortType === "idUp") return a.id - b.id
-        if (sortType === "label") return ("" + a.label).localeCompare(b.label)
-        if (sortType === "priority") {
-            let first
-            if (a.priority === "high") first = 2
-            if (a.priority === "regular") first = 1
-            if (a.priority === "low") first = 0
-            let second
-            if (b.priority === "high") second = 2
-            if (b.priority === "regular") second = 1
-            if (b.priority === "low") second = 0
-
-            return second - first
-        }
-    }
-
-    const doesTaskMatchQuery = (task: Task, query: string) =>
-        task.label.toLowerCase().includes(query.toLowerCase()) ||
-        String(task.id) === query
-
     const generateTasks = (status: Status) =>
         Object.values(tasks)
             .filter(
@@ -55,7 +39,7 @@ const Section = ({
                     doesTaskMatchQuery(task, searchQuery) &&
                     task.status === status
             )
-            .sort(sortTasks)
+            .sort(sortTasks(sortType))
             .map((task, index) => (
                 <TaskCard
                     key={task.id}

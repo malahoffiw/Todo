@@ -8,6 +8,10 @@ type DeleteModalProps = {
     closeModal: () => void
 }
 
+/**
+ * Modal window to delete projects, tasks, subtasks and comments.
+ *
+ */
 const DeleteModal = ({
     label,
     submessage,

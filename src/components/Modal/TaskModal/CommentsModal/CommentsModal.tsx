@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react"
 import dayjs from "dayjs"
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux"
-import { deleteComment } from "../../../redux/actions"
-import { Comment } from "../../../types"
-import { getNextId } from "../../../utils/getNextId"
-import Modal from "../Modal"
-import CommentElement from "../../projectPage/CommentElement/CommentElement"
-import DeleteModal from "../DeleteModal/DeleteModal"
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux"
+import { deleteComment } from "../../../../redux/actions"
+import { Comment } from "../../../../types"
+import { getNextId } from "../../../../utils/getNextId"
+import Modal from "../../Modal"
+import CommentElement from "../../../projectPage/CommentElement/CommentElement"
+import DeleteModal from "../../DeleteModal/DeleteModal"
 import styles from "./CommentsModal.module.scss"
 
 type CommentsModalProps = {
@@ -16,6 +16,10 @@ type CommentsModalProps = {
     submitComment: (comment: Comment, type: string) => void
 }
 
+/**
+ * Modal window to display and manage Comments.
+ *
+ */
 const CommentsModal = ({
     closeModal,
     selectedTaskId,
@@ -26,6 +30,7 @@ const CommentsModal = ({
     const comments = useAppSelector(
         (state) => state.projects[projectId].tasks[selectedTaskId].comments
     )
+
     const [newComment, setNewComment] = useState("")
     useState(false)
     const [isDeleteCommentModalVisible, setIsDeleteCommentModalVisible] =
@@ -36,6 +41,8 @@ const CommentsModal = ({
     )
     const inputRef = useRef<HTMLInputElement>(null)
 
+    // Action on submit the comment depending on type of comment submitted
+    // (create new comment | modify existing comment | reply to another comment)
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -91,7 +98,17 @@ const CommentsModal = ({
         }
         setNewComment("")
     }
+    const deleteChosenComment = (id = 0) => {
+        if (id === 0) id = chosenComment.id
+        dispatch(deleteComment(projectId, selectedTaskId, id))
+        closeDeleteModal()
+    }
+    const closeDeleteModal = () => {
+        setChosenComment(null)
+        setIsDeleteCommentModalVisible(false)
+    }
 
+    // Generates elements from comments in state
     const currentComments = (): JSX.Element[] => {
         const result = []
         for (let [id, comment] of Object.entries(comments)) {
@@ -112,16 +129,6 @@ const CommentsModal = ({
         }
 
         return result
-    }
-
-    const deleteChosenComment = (id = 0) => {
-        if (id === 0) id = chosenComment.id
-        dispatch(deleteComment(projectId, selectedTaskId, id))
-        closeDeleteModal()
-    }
-    const closeDeleteModal = () => {
-        setChosenComment(null)
-        setIsDeleteCommentModalVisible(false)
     }
 
     return (

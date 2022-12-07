@@ -8,6 +8,10 @@ type TaskEditorProps = {
     initialContent: string
 }
 
+/**
+ * TinyMCE Editor component for tasks and subtasks.
+ *
+ */
 const TaskEditor = ({ editorRef, initialContent }: TaskEditorProps) => {
     const { windowHeight } = useWindowParameters()
 
