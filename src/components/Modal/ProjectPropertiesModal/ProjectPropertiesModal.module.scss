@@ -4,7 +4,7 @@
 
 .back {
     @include modalBackground;
-    height: 237px;
+    height: 241px;
     width: 100%;
 
     .label {
@@ -38,7 +38,7 @@
 
     @media (min-width: 1024px) {
         width: 500px;
-        height: 238px;
+        height: 242px;
         border: 1px solid $textInActive;
     }
 }

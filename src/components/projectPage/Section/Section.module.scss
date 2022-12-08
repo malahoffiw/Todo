@@ -4,11 +4,11 @@
 .section {
     flex-shrink: 0;
     color: $textActive;
-    width: 270px;
+    width: 250px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     border-radius: 5px;
     border: 1px solid $backGray;
     overflow: hidden;

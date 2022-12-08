@@ -18,10 +18,11 @@
         display: flex;
         align-items: center;
         margin-inline: auto;
+        width: min(250px, 100%);
 
         &_input {
             @include btn;
-            width: 220px;
+            width: 100%;
             padding-inline: 20px;
         }
     }
