@@ -6,6 +6,7 @@ import Modal from "../../components/Modal/Modal"
 import Header from "../../components/Header/Header"
 import ProjectModal from "../../components/Modal/ProjectModal/ProjectModal"
 import styles from "./MainPage.module.scss"
+import getString from "../../utils/getString"
 
 const Main = () => {
     const projects = useAppSelector((state) => state.projects)
@@ -27,7 +28,7 @@ const Main = () => {
 
     return (
         <main className={styles.main}>
-            <Header label={"Мои проекты"} />
+            <Header label={getString("HEADING_MAIN")} />
             <div
                 className={styles.main_newProject}
                 onClick={() => setIsModalVisible(true)}
