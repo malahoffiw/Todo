@@ -27,11 +27,8 @@ const TaskEditor = ({ editorRef, initialContent }: TaskEditorProps) => {
                 statusbar: false,
                 plugins: [
                     "advlist",
-                    "advtable",
                     "autolink",
                     "emoticons",
-                    "checklist",
-                    "export",
                     "lists",
                     "link",
                     "charmap",
@@ -44,7 +41,6 @@ const TaskEditor = ({ editorRef, initialContent }: TaskEditorProps) => {
                     "wordcount",
                     "quickbars",
                     "image",
-                    "editimage",
                     "fullscreen",
                 ],
                 quickbars_selection_toolbar:
@@ -88,10 +84,8 @@ const TaskEditor = ({ editorRef, initialContent }: TaskEditorProps) => {
                 mobile: {
                     plugins: [
                         "advlist",
-                        "advtable",
                         "autolink",
                         "emoticons",
-                        "checklist",
                         "lists",
                         "link",
                         "charmap",
