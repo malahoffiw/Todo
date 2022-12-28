@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "../../hooks/redux"
+import { useAppSelector } from "../../hooks/redux"
 import ProjectCard from "../../components/mainPage/ProjectCard/ProjectCard"
 import Modal from "../../components/Modal/Modal"
 import Header from "../../components/Header/Header"
@@ -9,7 +9,6 @@ import styles from "./MainPage.module.scss"
 
 const Main = () => {
     const projects = useAppSelector((state) => state.projects)
-    const dispatch = useAppDispatch()
     const [isModalVisible, setIsModalVisible] = useState(false)
 
     const closeModal = () => {
@@ -17,9 +16,9 @@ const Main = () => {
     }
 
     const projectCards = []
-    for (let [id, project] of Object.entries(projects)) {
+    for (let project of projects) {
         projectCards.push(
-            <Link to={`projects/${id}`} key={id}>
+            <Link to={`projects/${project.id}`} key={project.id}>
                 <ProjectCard data={project} />
             </Link>
         )
@@ -37,11 +36,7 @@ const Main = () => {
             <ul className={styles.main_projectList}>{projectCards}</ul>
 
             <Modal isVisible={isModalVisible} closeModal={closeModal}>
-                <ProjectModal
-                    dispatch={dispatch}
-                    closeModal={closeModal}
-                    label={""}
-                />
+                <ProjectModal closeModal={closeModal} label={""} />
             </Modal>
         </main>
     )

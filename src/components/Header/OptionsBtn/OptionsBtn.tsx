@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useAppDispatch } from "../../../hooks/redux"
-import { deleteProject } from "../../../redux/actions"
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux"
 import { Project } from "../../../types"
 import Modal from "../../Modal/Modal"
 import ProjectModal from "../../Modal/ProjectModal/ProjectModal"
@@ -9,6 +8,7 @@ import ProjectPropertiesModal from "../../Modal/ProjectPropertiesModal/ProjectPr
 import OptionsModal from "../../Modal/OptionsModal/OptionsModal"
 import DeleteModal from "../../Modal/DeleteModal/DeleteModal"
 import styles from "./OptionsBtn.module.scss"
+import { deleteProject } from "../../../redux/reducers/projects"
 
 type OptionsBtnProps = {
     isOptionsVisible: boolean
@@ -27,6 +27,9 @@ const OptionsBtn = ({
 }: OptionsBtnProps) => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
+    const projectTasks = useAppSelector((state) => state.tasks).filter(
+        (task) => task.projectId === project.id
+    )
 
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)
     const [isModifyModalVisible, setIsModifyModalVisible] = useState(false)
@@ -72,7 +75,6 @@ const OptionsBtn = ({
                 <ProjectModal
                     closeModal={closeModalModify}
                     label={project.label}
-                    dispatch={dispatch}
                     id={project.id}
                 />
             </Modal>
@@ -91,11 +93,9 @@ const OptionsBtn = ({
             >
                 <DeleteModal
                     label={`Вы уверены, что хотите удалить проект ${project.label}?`}
-                    submessage={`Действие приведет к удалению всех (${
-                        Object.keys(project.tasks).length
-                    }) задач проекта`}
+                    submessage={`Действие приведет к удалению всех (${projectTasks.length}) задач проекта`}
                     deleteItem={() => {
-                        dispatch(deleteProject(project.id))
+                        dispatch(deleteProject({ projectId: project.id }))
                         navigate("/")
                     }}
                     closeModal={closeModalDelete}

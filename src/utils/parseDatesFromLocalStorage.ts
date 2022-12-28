@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import { CommentsList, GlobalState, SubTasksList, TasksList } from "../types"
+import { GlobalState, Task, Comment, SubTask, Project } from "../types"
 
 /**
  * Parses dates received from localStorage
@@ -7,41 +7,45 @@ import { CommentsList, GlobalState, SubTasksList, TasksList } from "../types"
  *
  */
 export const parseDatesFromLocalStorage = (state: GlobalState): GlobalState => {
-    for (let project of Object.values(state.projects)) {
-        project.createdAt = dayjs(project.createdAt)
-
-        parseTasksDatesFromLocalStorage(project.tasks)
+    return {
+        projects: parseProjectsDatesFromLocalStorage(state.projects),
+        tasks: parseTasksDatesFromLocalStorage(state.tasks),
+        subtasks: parseSubtasksDatesFromLocalStorage(state.subtasks),
+        comments: parseCommentsDatesFromLocalStorage(state.comments),
     }
-
-    return state
 }
 
-const parseTasksDatesFromLocalStorage = (tasks: TasksList) => {
-    for (let task of Object.values(tasks)) {
+const parseProjectsDatesFromLocalStorage = (projects: Project[]) => {
+    for (let project of projects) {
+        project.createdAt = dayjs(project.createdAt)
+    }
+
+    return projects
+}
+
+const parseTasksDatesFromLocalStorage = (tasks: Task[]) => {
+    for (let task of tasks) {
         task.createdAt = dayjs(task.createdAt)
         if (task.expiresAt) task.expiresAt = dayjs(task.expiresAt)
-
-        parseCommentsDatesFromLocalStorage(task.comments)
-        parseSubTasksDatesFromLocalStorage(task.subtasks)
     }
 
     return tasks
 }
 
-const parseSubTasksDatesFromLocalStorage = (subtasks: SubTasksList) => {
-    for (let subtask of Object.values(subtasks)) {
-        subtask.createdAt = dayjs(subtask.createdAt)
-        if (subtask.expiresAt) subtask.expiresAt = dayjs(subtask.expiresAt)
+const parseSubtasksDatesFromLocalStorage = (tasks: SubTask[]) => {
+    for (let task of tasks) {
+        task.createdAt = dayjs(task.createdAt)
+        if (task.expiresAt) task.expiresAt = dayjs(task.expiresAt)
     }
 
-    return subtasks
+    return tasks
 }
 
-const parseCommentsDatesFromLocalStorage = (comments: CommentsList) => {
-    for (let comment of Object.values(comments)) {
+const parseCommentsDatesFromLocalStorage = (comments: Comment[]) => {
+    for (let comment of comments) {
         comment.createdAt = dayjs(comment.createdAt)
 
-        if (Object.keys(comment.replies).length > 0) {
+        if (comment.replies.length > 0) {
             parseCommentsDatesFromLocalStorage(comment.replies)
         }
     }

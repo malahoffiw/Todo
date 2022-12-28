@@ -6,6 +6,7 @@ import { SortType } from "../../types/components"
  *
  */
 const sortTasks = (sortType: SortType) => (a: Task, b: Task) => {
+    if (sortType === "custom") return 0
     if (sortType === "idDown") return b.id - a.id
     if (sortType === "idUp") return a.id - b.id
     if (sortType === "label") return ("" + a.label).localeCompare(b.label)
@@ -14,6 +15,7 @@ const sortTasks = (sortType: SortType) => (a: Task, b: Task) => {
         if (a.priority === "high") first = 2
         if (a.priority === "regular") first = 1
         if (a.priority === "low") first = 0
+
         let second
         if (b.priority === "high") second = 2
         if (b.priority === "regular") second = 1

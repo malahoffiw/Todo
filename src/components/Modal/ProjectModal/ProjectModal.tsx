@@ -1,10 +1,9 @@
 import React, { useState } from "react"
-import { Dispatch } from "redux"
-import { createProject, modifyProject } from "../../../redux/actions"
 import styles from "./ProjectModal.module.scss"
+import { createProject, modifyProject } from "../../../redux/reducers/projects"
+import { useAppDispatch } from "../../../hooks/redux"
 
 type ProjectModalProps = {
-    dispatch: Dispatch
     closeModal: () => void
     label: string
     id?: number
@@ -14,22 +13,20 @@ type ProjectModalProps = {
  * Modal window to create and rename project.
  *
  */
-const ProjectModal = ({
-    dispatch,
-    closeModal,
-    label,
-    id,
-}: ProjectModalProps) => {
+const ProjectModal = ({ closeModal, label, id }: ProjectModalProps) => {
+    const dispatch = useAppDispatch()
     const [newProjectLabel, setNewProjectLabel] = useState(label)
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         if (!label) {
-            dispatch(createProject(newProjectLabel))
+            dispatch(createProject({ projectLabel: newProjectLabel }))
             setNewProjectLabel("")
         } else {
-            dispatch(modifyProject(id, newProjectLabel))
+            dispatch(
+                modifyProject({ projectId: id, projectLabel: newProjectLabel })
+            )
         }
         closeModal()
     }

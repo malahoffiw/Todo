@@ -1,6 +1,6 @@
 import React from "react"
 import { Droppable } from "react-beautiful-dnd"
-import { Status, Task, TasksList } from "../../../types"
+import { Status, Task } from "../../../types"
 import { SortType } from "../../../types/components"
 import sortTasks from "../../../utils/Section/sortTasks"
 import doesTaskMatchQuery from "../../../utils/Section/doesTaskMatchQuery"
@@ -10,7 +10,7 @@ import styles from "./Section.module.scss"
 type SectionProps = {
     id: Status
     name: string
-    tasks: TasksList
+    tasks: Task[]
     setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>
     setNewTaskStatus: React.Dispatch<React.SetStateAction<Status>>
     setSelectedTask: React.Dispatch<React.SetStateAction<Task>>
@@ -33,7 +33,7 @@ const Section = ({
     sortType,
 }: SectionProps) => {
     const generateTasks = (status: Status) =>
-        Object.values(tasks)
+        tasks
             .filter(
                 (task) =>
                     doesTaskMatchQuery(task, searchQuery) &&

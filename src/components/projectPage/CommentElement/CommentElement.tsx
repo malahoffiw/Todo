@@ -32,10 +32,10 @@ const CommentElement = ({
     // Generates replies for each comment
     const replies = (): JSX.Element[] => {
         const result = []
-        for (let [id, reply] of Object.entries(comment.replies)) {
+        for (let reply of comment.replies) {
             result.push(
                 <CommentElement
-                    key={id}
+                    key={reply.id}
                     comment={reply}
                     setChosenComment={setChosenComment}
                     setNewComment={setNewComment}

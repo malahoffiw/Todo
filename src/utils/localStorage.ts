@@ -2,7 +2,10 @@ import { parseDatesFromLocalStorage } from "./parseDatesFromLocalStorage"
 import { GlobalState } from "../types"
 
 const initialState: GlobalState = {
-    projects: {},
+    projects: [],
+    tasks: [],
+    subtasks: [],
+    comments: [],
 }
 
 /**

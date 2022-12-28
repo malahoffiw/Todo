@@ -1,18 +1,17 @@
 import React, { useRef, useState } from "react"
 import dayjs from "dayjs"
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux"
-import { deleteComment } from "../../../../redux/actions"
 import { Comment } from "../../../../types"
 import { getNextId } from "../../../../utils/getNextId"
 import Modal from "../../Modal"
 import CommentElement from "../../../projectPage/CommentElement/CommentElement"
 import DeleteModal from "../../DeleteModal/DeleteModal"
 import styles from "./CommentsModal.module.scss"
+import { deleteComment } from "../../../../redux/reducers/comments"
 
 type CommentsModalProps = {
     closeModal: () => void
     selectedTaskId: number
-    projectId: number
     submitComment: (comment: Comment, type: string) => void
 }
 
@@ -23,12 +22,11 @@ type CommentsModalProps = {
 const CommentsModal = ({
     closeModal,
     selectedTaskId,
-    projectId,
     submitComment,
 }: CommentsModalProps) => {
     const dispatch = useAppDispatch()
-    const comments = useAppSelector(
-        (state) => state.projects[projectId].tasks[selectedTaskId].comments
+    const comments = useAppSelector((state) => state.comments).filter(
+        (comment) => comment.taskId === selectedTaskId
     )
 
     const [newComment, setNewComment] = useState("")
@@ -50,9 +48,10 @@ const CommentsModal = ({
             case "new": {
                 const comment: Comment = {
                     id: getNextId(comments),
+                    taskId: selectedTaskId,
                     message: newComment,
                     createdAt: dayjs(),
-                    replies: {},
+                    replies: [],
                 }
                 submitComment(comment, "new")
 
@@ -61,6 +60,7 @@ const CommentsModal = ({
             case "modify": {
                 const comment: Comment = {
                     id: chosenComment.id,
+                    taskId: selectedTaskId,
                     message: newComment,
                     createdAt: dayjs(),
                     replies: chosenComment.replies,
@@ -75,18 +75,17 @@ const CommentsModal = ({
             case "reply": {
                 const reply: Comment = {
                     id: getNextId(comments),
+                    taskId: selectedTaskId,
                     message: newComment,
                     createdAt: dayjs(),
-                    replies: {},
+                    replies: [],
                 }
                 const comment: Comment = {
                     id: chosenComment.id,
+                    taskId: selectedTaskId,
                     message: chosenComment.message,
                     createdAt: chosenComment.createdAt,
-                    replies: {
-                        ...chosenComment.replies,
-                        [reply.id]: reply,
-                    },
+                    replies: [...chosenComment.replies, reply],
                 }
                 submitComment(comment, "existing")
 
@@ -100,7 +99,7 @@ const CommentsModal = ({
     }
     const deleteChosenComment = (id = 0) => {
         if (id === 0) id = chosenComment.id
-        dispatch(deleteComment(projectId, selectedTaskId, id))
+        dispatch(deleteComment({ commentId: id }))
         closeDeleteModal()
     }
     const closeDeleteModal = () => {

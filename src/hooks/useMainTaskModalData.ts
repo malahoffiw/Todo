@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import dayjs from "dayjs"
 import { Editor } from "tinymce"
-import { useAppDispatch } from "./redux"
-import { createTask, deleteTask, modifyTask } from "../redux/actions"
+import { createTask, deleteTask, modifyTask } from "../redux/reducers/tasks"
+import { useAppDispatch, useAppSelector } from "./redux"
 import { Project, Status, Task } from "../types"
 import { MainTaskModalData, TaskModalContent } from "../types/components"
 import { getNextId } from "../utils/getNextId"
@@ -13,9 +13,7 @@ const initialModalContent: TaskModalContent = {
         '<p style="text-align: center; font-size: 16px;">Описание</p><hr/><br/>',
     priority: "regular",
     expiresAt: null,
-    comments: {},
     files: [],
-    subtasks: {},
 }
 
 /**
@@ -28,6 +26,10 @@ const useMainTaskModalData = (
     setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     const dispatch = useAppDispatch()
+    const tasks = useAppSelector((state) => state.tasks).filter(
+        (task) => task.projectId === project.id
+    )
+
     const [newTaskStatus, setNewTaskStatus] = useState<Status>("queue")
     const [selectedTask, setSelectedTask] = useState<Task>(null)
     const [selectedTaskId, setSelectedTaskId] = useState(0)
@@ -52,9 +54,7 @@ const useMainTaskModalData = (
                     description: selectedTask.description,
                     priority: selectedTask.priority,
                     expiresAt: selectedTask.expiresAt,
-                    comments: selectedTask.comments,
                     files: selectedTask.files,
-                    subtasks: selectedTask.subtasks,
                 },
             })
             setSelectedTaskId(selectedTask.id)
@@ -76,7 +76,7 @@ const useMainTaskModalData = (
         let status: Status
 
         if (modalData.type === "new") {
-            id = getNextId(project.tasks)
+            id = getNextId(tasks)
             status = newTaskStatus
         } else {
             id = selectedTask.id
@@ -85,21 +85,20 @@ const useMainTaskModalData = (
 
         const newTask = {
             id: id,
+            projectId: project.id,
             status: status,
             label: modalData.data.label,
             description: editorRef.current.getContent(),
             createdAt: dayjs(),
             expiresAt: modalData.data.expiresAt || undefined,
             priority: modalData.data.priority,
-            comments: modalData.data.comments,
             files: modalData.data.files,
-            subtasks: modalData.data.subtasks,
         }
 
         if (modalData.type === "new") {
-            dispatch(createTask(project.id, newTask))
+            dispatch(createTask({ newTask }))
         } else {
-            dispatch(modifyTask(project.id, newTask))
+            dispatch(modifyTask({ taskId: newTask.id, newTask }))
         }
 
         closeModal()
@@ -107,7 +106,7 @@ const useMainTaskModalData = (
 
     const deleteCurrentTask = () => {
         setSelectedTaskId(0)
-        dispatch(deleteTask(project.id, selectedTask.id))
+        dispatch(deleteTask({ taskId: selectedTask.id }))
     }
 
     return {

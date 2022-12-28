@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { DragDropContext, DropResult } from "react-beautiful-dnd"
 import { Editor } from "tinymce"
-import { createComment, modifyComment, modifyTask } from "../../redux/actions"
 import { useAppDispatch, useAppSelector } from "../../hooks/redux"
 import useMainTaskModalData from "../../hooks/useMainTaskModalData"
 import { Status, Comment } from "../../types"
@@ -12,6 +11,8 @@ import Header from "../../components/Header/Header"
 import TaskModal from "../../components/Modal/TaskModal/TaskModal"
 import { SortType } from "../../types/components"
 import styles from "./ProjectPage.module.scss"
+import { modifyTask } from "../../redux/reducers/tasks"
+import { createComment, modifyComment } from "../../redux/reducers/comments"
 
 export const statuses: Record<Status, string> = {
     queue: "Очередь",
@@ -25,9 +26,11 @@ const Project = () => {
 
     const dispatch = useAppDispatch()
     const { projectId } = useParams()
-    const project = useAppSelector((state) => state.projects[Number(projectId)])
-    const tasks = useAppSelector(
-        (state) => state.projects[Number(projectId)].tasks
+    const project = useAppSelector((state) => state.projects).find(
+        (project) => project.id === Number(projectId)
+    )
+    const tasks = useAppSelector((state) => state.tasks).filter(
+        (task) => task.projectId === Number(projectId)
     )
 
     // Collecting things required for a modal task window
@@ -38,7 +41,6 @@ const Project = () => {
         onSubmit,
         closeModal,
         deleteCurrentTask,
-        selectedTask,
         setSelectedTask,
         selectedTaskId,
         setNewTaskStatus,
@@ -66,9 +68,7 @@ const Project = () => {
     }
 
     // Defines the behavior of the task when dragging is completed.
-    const onDragEnd = (result: DropResult) => {
-        const { destination, source, draggableId } = result
-
+    const onDragEnd = ({ destination, source, draggableId }: DropResult) => {
         if (!destination) return
 
         if (
@@ -77,10 +77,19 @@ const Project = () => {
         )
             return
 
-        const draggedTask = project.tasks[Number(draggableId)]
-        draggedTask.status = destination.droppableId as Status
+        const draggedTask = tasks.find(
+            (task) => task.id === Number(draggableId)
+        )
 
-        dispatch(modifyTask(project.id, draggedTask))
+        dispatch(
+            modifyTask({
+                taskId: Number(draggableId),
+                newTask: {
+                    ...draggedTask,
+                    status: destination.droppableId as Status,
+                },
+            })
+        )
     }
 
     return (
@@ -103,6 +112,7 @@ const Project = () => {
                     <option value="idUp">Сначала старые</option>
                     <option value="label">По названию</option>
                     <option value="priority">По приоритету</option>
+                    <option value="custom">Без сортировки</option>
                 </select>
             </label>
 
@@ -122,20 +132,13 @@ const Project = () => {
                     selectedMainTaskId={selectedTaskId}
                     submitComment={(comment: Comment, type: string) => {
                         if (type === "new")
-                            dispatch(
-                                createComment(
-                                    project.id,
-                                    selectedTask.id,
-                                    comment
-                                )
-                            )
+                            dispatch(createComment({ newComment: comment }))
                         else
                             dispatch(
-                                modifyComment(
-                                    project.id,
-                                    selectedTask.id,
-                                    comment
-                                )
+                                modifyComment({
+                                    commentId: comment.id,
+                                    newComment: comment,
+                                })
                             )
                     }}
                 />
