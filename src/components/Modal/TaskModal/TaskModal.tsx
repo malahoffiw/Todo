@@ -63,7 +63,7 @@ const TaskModal = ({
         setModalData,
         onSubmit,
         closeModal,
-        deleteCurrentTask,
+        deleteCurrentSubtask,
         setSelectedSubTask,
         setNewTaskStatus,
     } = useSubTaskModalData(
@@ -98,7 +98,6 @@ const TaskModal = ({
                 >
                     <CommentsModal
                         closeModal={closeCommentsModal}
-                        projectId={projectId}
                         selectedTaskId={selectedMainTaskId}
                         submitComment={submitComment}
                     />
@@ -115,7 +114,7 @@ const TaskModal = ({
                         closeModal={closeModal}
                         onSubmit={onSubmit}
                         editorRef={subTaskEditorRef}
-                        deleteSubTask={deleteCurrentTask}
+                        deleteSubTask={deleteCurrentSubtask}
                     />
                 </Modal>
             )}
@@ -225,7 +224,6 @@ const TaskModal = ({
                     />
 
                     <TaskModalFeatures
-                        projectId={projectId}
                         selectedMainTaskId={selectedMainTaskId}
                         mainModalData={mainModalData}
                         setIsSubTaskModalVisible={setIsSubTaskModalVisible}

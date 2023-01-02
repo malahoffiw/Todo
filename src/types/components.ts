@@ -2,9 +2,15 @@
 
 import { SubTask, Task } from "./index"
 
-export type SortType = "idUp" | "idDown" | "label" | "priority"
-export type TaskModalContent = Omit<Task, "id" | "createdAt" | "status">
-export type SubTaskModalContent = Omit<SubTask, "id" | "createdAt" | "status">
+export type SortType = "idUp" | "idDown" | "label" | "priority" | "custom"
+export type TaskModalContent = Omit<
+    Task,
+    "id" | "createdAt" | "status" | "projectId"
+>
+export type SubTaskModalContent = Omit<
+    SubTask,
+    "id" | "createdAt" | "status" | "taskId"
+>
 
 export type TasksStats = {
     amountAll: number

@@ -1,13 +1,13 @@
 import React from "react"
 import { Droppable } from "react-beautiful-dnd"
-import { Status, SubTask, SubTasksList } from "../../../../../types"
+import { Status, SubTask } from "../../../../../types"
 import SubTaskCard from "./SubTaskCard/SubTaskCard"
 import styles from "./SubSection.module.scss"
 
 type SubSectionProps = {
     id: Status
     name: string
-    subtasks: SubTasksList
+    subtasks: SubTask[]
     setIsSubTaskModalVisible: React.Dispatch<React.SetStateAction<boolean>>
     setNewTaskStatus: React.Dispatch<React.SetStateAction<Status>>
     setSelectedSubTask: React.Dispatch<React.SetStateAction<SubTask>>
@@ -26,7 +26,7 @@ const SubSection = ({
     setSelectedSubTask,
 }: SubSectionProps) => {
     const generateSubTasks = (status: Status) =>
-        Object.values(subtasks)
+        subtasks
             .filter((subtask) => subtask.status === status)
             .map((subtask, index) => (
                 <SubTaskCard

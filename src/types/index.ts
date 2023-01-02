@@ -4,41 +4,54 @@ import { Dayjs } from "dayjs"
 import { IMeta } from "react-dropzone-uploader"
 
 export interface GlobalState {
-    projects: ProjectsList
+    projects: Project[]
+    tasks: StatusesMap<Task>
+    subtasks: StatusesMap<SubTask>
+    comments: Comment[]
 }
 
 export interface Project {
     id: number
     label: string
-    tasks: TasksList
     createdAt: Dayjs
+}
+
+export interface StatusesMap<T extends Task | SubTask> {
+    queue: T[]
+    development: T[]
+    done: T[]
 }
 
 export interface Task {
     id: number
+    projectId: number
     label: string
     description: string
     createdAt: Dayjs
     expiresAt?: Dayjs
     priority: Priority
     status: Status
-    comments: CommentsList
-    subtasks: SubTasksList
     files: IMeta[]
+}
+
+export interface SubTask {
+    id: number
+    taskId: number
+    label: string
+    description: string
+    createdAt: Dayjs
+    expiresAt?: Dayjs
+    priority: Priority
+    status: Status
 }
 
 export interface Comment {
     id: number
+    taskId: number
     message: string
     createdAt: Dayjs
-    replies: CommentsList
+    replies: Comment[]
 }
 
-export type ProjectsList = Record<number, Project>
-export type TasksList = Record<number, Task>
-export type CommentsList = Record<number, Comment>
-export type SubTasksList = Record<number, SubTask>
-
-export type SubTask = Omit<Task, "subtasks" | "files" | "comments">
 export type Status = "queue" | "development" | "done"
 export type Priority = "regular" | "high" | "low"

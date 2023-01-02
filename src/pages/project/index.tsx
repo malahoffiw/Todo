@@ -1,16 +1,19 @@
 import React, { useRef, useState } from "react"
 import { useParams } from "react-router-dom"
-import { DragDropContext, DropResult } from "react-beautiful-dnd"
+import { DragDropContext } from "react-beautiful-dnd"
 import { Editor } from "tinymce"
-import { createComment, modifyComment, modifyTask } from "../../redux/actions"
-import { useAppDispatch, useAppSelector } from "../../hooks/redux"
 import useMainTaskModalData from "../../hooks/useMainTaskModalData"
+import { useAppDispatch, useAppSelector } from "../../hooks/redux"
+import { createComment, modifyComment } from "../../redux/reducers/comments"
+import { sortTasks } from "../../redux/reducers/tasks"
 import { Status, Comment } from "../../types"
+import { SortType } from "../../types/components"
 import Modal from "../../components/Modal/Modal"
 import Section from "../../components/projectPage/Section/Section"
 import Header from "../../components/Header/Header"
 import TaskModal from "../../components/Modal/TaskModal/TaskModal"
-import { SortType } from "../../types/components"
+import { getProjectTasks } from "../../utils/getProjectTasks"
+import onDragEnd from "../../utils/dnd/tasks/onDragEnd"
 import styles from "./ProjectPage.module.scss"
 
 export const statuses: Record<Status, string> = {
@@ -25,10 +28,11 @@ const Project = () => {
 
     const dispatch = useAppDispatch()
     const { projectId } = useParams()
-    const project = useAppSelector((state) => state.projects[Number(projectId)])
-    const tasks = useAppSelector(
-        (state) => state.projects[Number(projectId)].tasks
+    const project = useAppSelector((state) => state.projects).find(
+        (project) => project.id === Number(projectId)
     )
+    const tasks = useAppSelector((state) => state.tasks)
+    const projectTasks = getProjectTasks(tasks, Number(projectId))
 
     // Collecting things required for a modal task window
     const [isModalVisible, setIsModalVisible] = useState(false)
@@ -38,14 +42,13 @@ const Project = () => {
         onSubmit,
         closeModal,
         deleteCurrentTask,
-        selectedTask,
         setSelectedTask,
         selectedTaskId,
         setNewTaskStatus,
     } = useMainTaskModalData(project, editorRef, setIsModalVisible)
 
     const [searchQuery, setSearchQuery] = useState("")
-    const [sortType, setSortType] = useState<SortType>("idDown")
+    const [sortType, setSortType] = useState<SortType>("custom")
 
     // Generating tasks sections
     const sections = []
@@ -55,32 +58,13 @@ const Project = () => {
                 key={id}
                 id={id as Status}
                 name={name}
-                tasks={tasks}
+                tasks={projectTasks[id as Status]}
                 setIsModalVisible={setIsModalVisible}
                 setNewTaskStatus={setNewTaskStatus}
                 setSelectedTask={setSelectedTask}
                 searchQuery={searchQuery}
-                sortType={sortType}
             />
         )
-    }
-
-    // Defines the behavior of the task when dragging is completed.
-    const onDragEnd = (result: DropResult) => {
-        const { destination, source, draggableId } = result
-
-        if (!destination) return
-
-        if (
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        )
-            return
-
-        const draggedTask = project.tasks[Number(draggableId)]
-        draggedTask.status = destination.droppableId as Status
-
-        dispatch(modifyTask(project.id, draggedTask))
     }
 
     return (
@@ -97,16 +81,27 @@ const Project = () => {
                 <select
                     className={styles.main_sort_select}
                     value={sortType}
-                    onChange={(e) => setSortType(e.target.value as SortType)}
+                    onChange={(e) => {
+                        setSortType(e.target.value as SortType)
+                        dispatch(
+                            sortTasks({ sortType: e.target.value as SortType })
+                        )
+                    }}
                 >
                     <option value="idDown">Сначала новые</option>
                     <option value="idUp">Сначала старые</option>
                     <option value="label">По названию</option>
                     <option value="priority">По приоритету</option>
+                    <option value="custom">Без сортировки</option>
                 </select>
             </label>
 
-            <DragDropContext onDragEnd={onDragEnd}>
+            <DragDropContext
+                onDragEnd={(result) => {
+                    setSortType("custom")
+                    onDragEnd(result, projectTasks, dispatch)
+                }}
+            >
                 <div className={styles.main_board}>{sections}</div>
             </DragDropContext>
 
@@ -122,20 +117,13 @@ const Project = () => {
                     selectedMainTaskId={selectedTaskId}
                     submitComment={(comment: Comment, type: string) => {
                         if (type === "new")
-                            dispatch(
-                                createComment(
-                                    project.id,
-                                    selectedTask.id,
-                                    comment
-                                )
-                            )
+                            dispatch(createComment({ newComment: comment }))
                         else
                             dispatch(
-                                modifyComment(
-                                    project.id,
-                                    selectedTask.id,
-                                    comment
-                                )
+                                modifyComment({
+                                    commentId: comment.id,
+                                    newComment: comment,
+                                })
                             )
                     }}
                 />

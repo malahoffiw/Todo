@@ -1,16 +1,16 @@
 import React from "react"
-import { DragDropContext, DropResult } from "react-beautiful-dnd"
+import { DragDropContext } from "react-beautiful-dnd"
 import { Status, SubTask } from "../../../../types"
 import { MainTaskModalData } from "../../../../types/components"
-import { modifySubTask } from "../../../../redux/actions"
-import { useAppDispatch } from "../../../../hooks/redux"
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux"
 import { statuses } from "../../../../pages/project"
 import SubSection from "./SubSection/SubSection"
 import FilesList from "./FilesList/FilesList"
+import { getTaskSubtasks } from "../../../../utils/getTaskSubtasks"
+import onDragEnd from "../../../../utils/dnd/subtasks/onDragEnd"
 import styles from "./TaskModalFeatures.module.scss"
 
 type TaskModalFeaturesProps = {
-    projectId: number
     selectedMainTaskId: number
     mainModalData: MainTaskModalData
     setIsSubTaskModalVisible: React.Dispatch<React.SetStateAction<boolean>>
@@ -23,7 +23,6 @@ type TaskModalFeaturesProps = {
  *
  */
 const TaskModalFeatures = ({
-    projectId,
     selectedMainTaskId,
     mainModalData,
     setIsSubTaskModalVisible,
@@ -31,6 +30,9 @@ const TaskModalFeatures = ({
     setSelectedSubTask,
 }: TaskModalFeaturesProps) => {
     const dispatch = useAppDispatch()
+    const subtasks = useAppSelector((state) => state.subtasks)
+    const taskSubtasks = getTaskSubtasks(subtasks, selectedMainTaskId)
+
     const subSections = []
     for (let [id, name] of Object.entries(statuses)) {
         subSections.push(
@@ -38,7 +40,7 @@ const TaskModalFeatures = ({
                 key={id}
                 id={id as Status}
                 name={name}
-                subtasks={mainModalData.data.subtasks}
+                subtasks={taskSubtasks[id as Status]}
                 setIsSubTaskModalVisible={setIsSubTaskModalVisible}
                 setNewTaskStatus={setNewTaskStatus}
                 setSelectedSubTask={setSelectedSubTask}
@@ -46,27 +48,14 @@ const TaskModalFeatures = ({
         )
     }
 
-    const onDragEnd = (result: DropResult) => {
-        const { destination, source, draggableId } = result
-
-        if (!destination) return
-
-        if (
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        )
-            return
-
-        const draggedSubTask = mainModalData.data.subtasks[Number(draggableId)]
-        draggedSubTask.status = destination.droppableId as Status
-
-        dispatch(modifySubTask(projectId, selectedMainTaskId, draggedSubTask))
-    }
-
     return (
         <div className={styles.features}>
             {mainModalData.type === "existing" && (
-                <DragDropContext onDragEnd={onDragEnd}>
+                <DragDropContext
+                    onDragEnd={(result) =>
+                        onDragEnd(result, taskSubtasks, dispatch)
+                    }
+                >
                     <fieldset className={styles.features_subtasks}>
                         <legend className={styles.features_subtasks_legend}>
                             Подзадачи

@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react"
 import { Editor } from "tinymce"
 import dayjs from "dayjs"
-import { useAppDispatch } from "./redux"
-import { createSubTask, deleteSubTask, modifySubTask } from "../redux/actions"
+import {
+    createSubTask,
+    deleteSubTask,
+    modifySubTask,
+} from "../redux/reducers/subtasks"
+import { useAppDispatch, useAppSelector } from "./redux"
 import { Status, SubTask } from "../types"
 import {
     MainTaskModalData,
     SubTaskModalContent,
     SubTaskModalData,
 } from "../types/components"
-import { getNextId } from "../utils/getNextId"
+import { getNextTaskId } from "../utils/getNextId"
+import { getTaskSubtasks } from "../utils/getTaskSubtasks"
 
 const initialModalContent: SubTaskModalContent = {
     label: "",
@@ -32,6 +37,9 @@ const useSubTaskModalData = (
     setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     const dispatch = useAppDispatch()
+    const subtasks = useAppSelector((state) => state.subtasks)
+    const taskSubtasks = getTaskSubtasks(subtasks, taskId)
+
     const [newTaskStatus, setNewTaskStatus] = useState<Status>("queue")
     const [selectedSubTask, setSelectedSubTask] = useState<SubTask>(null)
 
@@ -74,7 +82,7 @@ const useSubTaskModalData = (
         let status: Status
 
         if (modalData.type === "new") {
-            id = getNextId(mainModalData.data.subtasks)
+            id = getNextTaskId(taskSubtasks)
             status = newTaskStatus
         } else {
             id = selectedSubTask.id
@@ -83,6 +91,7 @@ const useSubTaskModalData = (
 
         const newTask = {
             id: id,
+            taskId: taskId,
             status: status,
             label: modalData.data.label,
             description: editorRef.current.getContent(),
@@ -92,36 +101,21 @@ const useSubTaskModalData = (
         }
 
         if (modalData.type === "new") {
-            dispatch(createSubTask(projectId, taskId, newTask))
+            dispatch(createSubTask({ newSubtask: newTask }))
         } else {
-            dispatch(modifySubTask(projectId, taskId, newTask))
+            dispatch(modifySubTask({ subtaskId: id, newSubtask: newTask }))
         }
 
-        setMainModalData((prev) => ({
-            ...prev,
-            data: {
-                ...prev.data,
-                subtasks: {
-                    ...prev.data.subtasks,
-                    [id]: newTask,
-                },
-            },
-        }))
         closeModal()
     }
 
-    const deleteCurrentTask = () => {
-        const { [selectedSubTask.id]: _, ...rest } = mainModalData.data.subtasks
-        setMainModalData((prev) => ({
-            ...prev,
-            data: {
-                ...prev.data,
-                subtasks: {
-                    ...rest,
-                },
-            },
-        }))
-        dispatch(deleteSubTask(projectId, taskId, selectedSubTask.id))
+    const deleteCurrentSubtask = () => {
+        dispatch(
+            deleteSubTask({
+                subtaskStatus: selectedSubTask.status,
+                subtaskId: selectedSubTask.id,
+            })
+        )
     }
 
     return {
@@ -129,7 +123,7 @@ const useSubTaskModalData = (
         setModalData,
         onSubmit,
         closeModal,
-        deleteCurrentTask,
+        deleteCurrentSubtask,
         setSelectedSubTask,
         setNewTaskStatus,
     }
