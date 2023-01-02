@@ -5,7 +5,8 @@ import { createTask, deleteTask, modifyTask } from "../redux/reducers/tasks"
 import { useAppDispatch, useAppSelector } from "./redux"
 import { Project, Status, Task } from "../types"
 import { MainTaskModalData, TaskModalContent } from "../types/components"
-import { getNextId } from "../utils/getNextId"
+import { getNextTaskId } from "../utils/getNextId"
+import { getProjectTasks } from "../utils/getProjectTasks"
 
 const initialModalContent: TaskModalContent = {
     label: "",
@@ -26,9 +27,8 @@ const useMainTaskModalData = (
     setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     const dispatch = useAppDispatch()
-    const tasks = useAppSelector((state) => state.tasks).filter(
-        (task) => task.projectId === project.id
-    )
+    const tasks = useAppSelector((state) => state.tasks)
+    const projectTasks = getProjectTasks(tasks, project.id)
 
     const [newTaskStatus, setNewTaskStatus] = useState<Status>("queue")
     const [selectedTask, setSelectedTask] = useState<Task>(null)
@@ -76,7 +76,7 @@ const useMainTaskModalData = (
         let status: Status
 
         if (modalData.type === "new") {
-            id = getNextId(tasks)
+            id = getNextTaskId(projectTasks)
             status = newTaskStatus
         } else {
             id = selectedTask.id
@@ -106,7 +106,12 @@ const useMainTaskModalData = (
 
     const deleteCurrentTask = () => {
         setSelectedTaskId(0)
-        dispatch(deleteTask({ taskId: selectedTask.id }))
+        dispatch(
+            deleteTask({
+                taskStatus: selectedTask.status,
+                taskId: selectedTask.id,
+            })
+        )
     }
 
     return {

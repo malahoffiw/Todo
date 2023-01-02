@@ -1,7 +1,8 @@
 import React from "react"
-import { Project } from "../../../types"
-import styles from "./ProjectPropertiesModal.module.scss"
 import { useAppSelector } from "../../../hooks/redux"
+import { Project } from "../../../types"
+import { getProjectTasksAmount } from "../../../utils/getProjectTasks"
+import styles from "./ProjectPropertiesModal.module.scss"
 
 type ProjectFeaturesModalProps = {
     closeModal: () => void
@@ -16,9 +17,8 @@ const ProjectPropertiesModal = ({
     project,
     closeModal,
 }: ProjectFeaturesModalProps) => {
-    const projectTasks = useAppSelector((state) => state.tasks).filter(
-        (task) => task.projectId === project.id
-    )
+    const tasks = useAppSelector((state) => state.tasks)
+    const projectTasksAmount = getProjectTasksAmount(tasks, project.id)
 
     return (
         <div className={styles.back} onClick={(e) => e.stopPropagation()}>
@@ -31,7 +31,7 @@ const ProjectPropertiesModal = ({
                     </li>
                     <li className={styles.features_option}>
                         <p>Всего задач</p>
-                        <p>{projectTasks.length}</p>
+                        <p>{projectTasksAmount}</p>
                     </li>
                     <li className={styles.features_option}>
                         <p>Дата создания</p>

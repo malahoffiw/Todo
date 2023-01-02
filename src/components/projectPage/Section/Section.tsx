@@ -1,10 +1,8 @@
 import React from "react"
 import { Droppable } from "react-beautiful-dnd"
 import { Status, Task } from "../../../types"
-import { SortType } from "../../../types/components"
-import sortTasks from "../../../utils/Section/sortTasks"
-import doesTaskMatchQuery from "../../../utils/Section/doesTaskMatchQuery"
 import TaskCard from "./TaskCard/TaskCard"
+import doesTaskMatchQuery from "../../../utils/Section/doesTaskMatchQuery"
 import styles from "./Section.module.scss"
 
 type SectionProps = {
@@ -15,7 +13,6 @@ type SectionProps = {
     setNewTaskStatus: React.Dispatch<React.SetStateAction<Status>>
     setSelectedTask: React.Dispatch<React.SetStateAction<Task>>
     searchQuery: string
-    sortType: SortType
 }
 
 /**
@@ -30,7 +27,6 @@ const Section = ({
     setNewTaskStatus,
     setSelectedTask,
     searchQuery,
-    sortType,
 }: SectionProps) => {
     const generateTasks = (status: Status) =>
         tasks
@@ -39,7 +35,6 @@ const Section = ({
                     doesTaskMatchQuery(task, searchQuery) &&
                     task.status === status
             )
-            .sort(sortTasks(sortType))
             .map((task, index) => (
                 <TaskCard
                     key={task.id}

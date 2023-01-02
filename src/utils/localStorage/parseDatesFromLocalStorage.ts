@@ -1,5 +1,12 @@
 import dayjs from "dayjs"
-import { GlobalState, Task, Comment, SubTask, Project } from "../types"
+import {
+    GlobalState,
+    Task,
+    Comment,
+    SubTask,
+    Project,
+    StatusesMap,
+} from "../../types"
 
 /**
  * Parses dates received from localStorage
@@ -9,8 +16,8 @@ import { GlobalState, Task, Comment, SubTask, Project } from "../types"
 export const parseDatesFromLocalStorage = (state: GlobalState): GlobalState => {
     return {
         projects: parseProjectsDatesFromLocalStorage(state.projects),
-        tasks: parseTasksDatesFromLocalStorage(state.tasks),
-        subtasks: parseSubtasksDatesFromLocalStorage(state.subtasks),
+        tasks: parseTasksDatesFromLocalStorage<Task>(state.tasks),
+        subtasks: parseTasksDatesFromLocalStorage<SubTask>(state.subtasks),
         comments: parseCommentsDatesFromLocalStorage(state.comments),
     }
 }
@@ -23,19 +30,14 @@ const parseProjectsDatesFromLocalStorage = (projects: Project[]) => {
     return projects
 }
 
-const parseTasksDatesFromLocalStorage = (tasks: Task[]) => {
-    for (let task of tasks) {
-        task.createdAt = dayjs(task.createdAt)
-        if (task.expiresAt) task.expiresAt = dayjs(task.expiresAt)
-    }
-
-    return tasks
-}
-
-const parseSubtasksDatesFromLocalStorage = (tasks: SubTask[]) => {
-    for (let task of tasks) {
-        task.createdAt = dayjs(task.createdAt)
-        if (task.expiresAt) task.expiresAt = dayjs(task.expiresAt)
+const parseTasksDatesFromLocalStorage = <T extends Task | SubTask>(
+    tasks: StatusesMap<T>
+) => {
+    for (let tasksByStatus of Object.values(tasks)) {
+        for (let task of tasksByStatus) {
+            task.createdAt = dayjs(task.createdAt)
+            if (task.expiresAt) task.expiresAt = dayjs(task.expiresAt)
+        }
     }
 
     return tasks

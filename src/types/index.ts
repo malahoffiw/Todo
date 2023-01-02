@@ -5,8 +5,8 @@ import { IMeta } from "react-dropzone-uploader"
 
 export interface GlobalState {
     projects: Project[]
-    tasks: Task[]
-    subtasks: SubTask[]
+    tasks: StatusesMap<Task>
+    subtasks: StatusesMap<SubTask>
     comments: Comment[]
 }
 
@@ -14,6 +14,12 @@ export interface Project {
     id: number
     label: string
     createdAt: Dayjs
+}
+
+export interface StatusesMap<T extends Task | SubTask> {
+    queue: T[]
+    development: T[]
+    done: T[]
 }
 
 export interface Task {
@@ -28,14 +34,6 @@ export interface Task {
     files: IMeta[]
 }
 
-export interface Comment {
-    id: number
-    taskId: number
-    message: string
-    createdAt: Dayjs
-    replies: Comment[]
-}
-
 export interface SubTask {
     id: number
     taskId: number
@@ -45,6 +43,14 @@ export interface SubTask {
     expiresAt?: Dayjs
     priority: Priority
     status: Status
+}
+
+export interface Comment {
+    id: number
+    taskId: number
+    message: string
+    createdAt: Dayjs
+    replies: Comment[]
 }
 
 export type Status = "queue" | "development" | "done"

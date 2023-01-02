@@ -15,6 +15,10 @@ const store = configureStore({
         comments: commentsReducer,
     },
     preloadedState: persistedState,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 })
 
 store.subscribe(() => {

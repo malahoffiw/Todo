@@ -19,7 +19,7 @@ const Main = () => {
     for (let project of projects) {
         projectCards.push(
             <Link to={`projects/${project.id}`} key={project.id}>
-                <ProjectCard data={project} />
+                <ProjectCard project={project} />
             </Link>
         )
     }

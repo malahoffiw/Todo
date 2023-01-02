@@ -13,7 +13,8 @@ import {
     SubTaskModalContent,
     SubTaskModalData,
 } from "../types/components"
-import { getNextId } from "../utils/getNextId"
+import { getNextTaskId } from "../utils/getNextId"
+import { getTaskSubtasks } from "../utils/getTaskSubtasks"
 
 const initialModalContent: SubTaskModalContent = {
     label: "",
@@ -36,9 +37,8 @@ const useSubTaskModalData = (
     setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     const dispatch = useAppDispatch()
-    const subtasks = useAppSelector((state) => state.subtasks).filter(
-        (subtask) => subtask.taskId === taskId
-    )
+    const subtasks = useAppSelector((state) => state.subtasks)
+    const taskSubtasks = getTaskSubtasks(subtasks, taskId)
 
     const [newTaskStatus, setNewTaskStatus] = useState<Status>("queue")
     const [selectedSubTask, setSelectedSubTask] = useState<SubTask>(null)
@@ -82,7 +82,7 @@ const useSubTaskModalData = (
         let status: Status
 
         if (modalData.type === "new") {
-            id = getNextId(subtasks)
+            id = getNextTaskId(taskSubtasks)
             status = newTaskStatus
         } else {
             id = selectedSubTask.id
@@ -110,7 +110,12 @@ const useSubTaskModalData = (
     }
 
     const deleteCurrentSubtask = () => {
-        dispatch(deleteSubTask({ subtaskId: selectedSubTask.id }))
+        dispatch(
+            deleteSubTask({
+                subtaskStatus: selectedSubTask.status,
+                subtaskId: selectedSubTask.id,
+            })
+        )
     }
 
     return {

@@ -22,8 +22,6 @@ const TaskEditor = ({ editorRef, initialContent }: TaskEditorProps) => {
             initialValue={initialContent}
             init={{
                 height: Math.floor(windowHeight / 2),
-                skin: "fabric",
-                icons: "thin",
                 statusbar: false,
                 plugins: [
                     "advlist",
